@@ -1,0 +1,22 @@
+page-profile {
+
+    ion-item:not(:first-child) {
+        .item-inner{
+            border-bottom-color: #CCC !important;
+            box-shadow: none !important;
+        }
+    }
+
+    ion-avatar.user-photo{
+        width: 100%;
+        min-height: 140px;
+        text-align: center;
+
+        img {
+            display: inline-block !important; 
+            width: 120px !important; 
+            height: 120px !important; 
+        }
+    }
+
+}

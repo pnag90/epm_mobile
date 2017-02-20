@@ -1,0 +1,9 @@
+<img [src]="message.sender.photo || placeholder" class="profile-pic {{side}}" *ngIf="message"/>
+<div class="chat-bubble {{side}} slide-{{side}}"  *ngIf="message">
+  <div class="message" *ngFor="let msg of message.messages" autolinker>
+    <p [innerHTML]="msg"></p>
+  </div>
+</div>    
+<div class="message-detail {{side}}">
+  <span class="timestamp">{{message.timestamp | moment:'HH:mm' | lowercase}}</span>
+</div> 

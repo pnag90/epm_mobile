@@ -1,0 +1,36 @@
+<ion-content>
+    <ion-searchbar [(ngModel)]="searchTerm" [formControl]="searchControl" (ionInput)="onSearchInput()" placeholder="Procurar utilizador"></ion-searchbar>
+ 
+    <div *ngIf="searching" class="spinner-container">
+        <ion-spinner></ion-spinner>
+    </div>
+
+    <ion-list>
+        <ion-list-header *ngIf="onlineUsers.length>0">Online</ion-list-header>
+        <ion-item *ngFor="let onChat of onlineUsers" (click)="openUser(onChat)">
+            <ion-avatar item-left>
+                <img [src]="'data:image/jpeg;base64,'+onChat.photo | safe: 'url'" class="profile-pic" *ngIf="onChat.photo"/>
+                <img [src]="defaultPic" class="profile-pic" *ngIf="!onChat.photo"/>
+            </ion-avatar>
+            <h2>{{onChat.userName}}</h2>
+            <p>{{onChat.lastMessage}}</p>
+            <ion-badge *ngIf="chatAlerts[onChat.userId] && chatAlerts[onChat.userId]>0" item-right item-right color="danger">
+                {{ chatAlerts[onChat.userId] }}
+            </ion-badge>
+        </ion-item>
+    </ion-list>
+    <ion-list>
+        <ion-list-header *ngIf="offlineUsers.length>0">Offline</ion-list-header>
+        <ion-item *ngFor="let offChat of offlineUsers" (click)="openUser(offChat)">
+            <ion-avatar item-left>
+                <img [src]="'data:image/jpeg;base64,'+ offChat.photo | safe: 'url'" class="profile-pic" *ngIf="offChat.photo"/>
+                <img [src]="defaultPic" class="profile-pic" *ngIf="!offChat.photo"/>
+            </ion-avatar>
+            <h2>{{offChat.userName}}</h2>
+            <p>{{offChat.lastMessage}}</p>
+            <ion-badge *ngIf="chatAlerts[offChat.userId] && chatAlerts[offChat.userId]>0" item-right color="danger">
+                {{ chatAlerts[offChat.userId] }}
+            </ion-badge>
+        </ion-item>
+    </ion-list>
+</ion-content>

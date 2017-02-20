@@ -1,0 +1,13 @@
+page-home {
+  .header, .header > .toolbar-background {
+    background-color: color($colors, header);
+
+    .title .toolbar-title, button {
+      color: color($colors, light);
+    }
+  }
+
+  .home {
+    color: color($colors, light);
+  }
+}

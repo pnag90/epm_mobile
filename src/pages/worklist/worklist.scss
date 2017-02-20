@@ -1,0 +1,21 @@
+page-worklist {
+
+    .app-state { 
+        width: 4px;
+        height: 61px;
+        position: absolute;
+        background-color: #cccccc; 
+        margin-bottom: 13px !important;
+    }
+    .app-state.app-state-CHE { background-color: #C79121; }
+    .app-state.app-state-CHA { background-color: #739e73; }
+    .app-state.app-state-SAI { background-color: #57889C; }
+    .app-state.app-state-FAL { background-color: #A90329; }
+    .app-state.app-state-ANU { background-color: #A90329; }
+
+    ion-item {
+        h2,h3,p{
+            margin-left: 10px !important;
+        }
+    }
+}

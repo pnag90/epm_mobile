@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <ion-title>{{chatUser.userName}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div class="loader-center" *ngIf="loading">
+    <div class="loader">
+      <ion-spinner></ion-spinner>
+    </div>
+  </div>
+  <div #chatbox class="chat-box" *ngIf="userMessages">
+    <div *ngFor="let message of userMessages" class="message-wrapper">
+      <div *ngIf="message && user.userId != message.sender.userId">
+          <message-component [msgSide]="'left'" [message]="message"></message-component>
+      </div>
+      <div *ngIf="message && user.userId === message.sender.userId">
+          <message-component [msgSide]="'right'" [message]="message"></message-component>
+      </div>
+      <div class="cf"></div>
+    </div>
+  </div>
+</ion-content>
+<ion-footer>
+  <form [formGroup]="messageForm" (submit)="send(chatBox)" novalidate>
+    <ion-item>
+      <ion-input formControlName="message" [(ngModel)]="chatBox" [disabled]="chatUser.state!='online'"></ion-input>
+      <button ion-button clear (click)="send(chatBox)" item-right [disabled]="chatUser.state!='online'">
+          <ion-icon class="footer-btn" name="send"></ion-icon>
+      </button>
+    </ion-item>
+  </form>
+</ion-footer>
