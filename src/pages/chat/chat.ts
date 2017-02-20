@@ -1,9 +1,10 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NavController } from 'ionic-angular';
+import { ConfService } from '../../providers/conf-service';
 import { AuthService } from '../../providers/auth-service';
 import { SocketService } from '../../providers/socket-service';
-import { ChatUser, ChatMessage } from '../../models/epm-types';
+import { ChatUser } from '../../models/epm-types';
 import { MessagesPage } from './messages/messages';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/debounceTime';
@@ -14,12 +15,11 @@ import 'rxjs/add/operator/map';
     templateUrl: 'chat.html'
 })
 export class ChatPage implements OnDestroy {
-    subscription: Subscription;
-    alerts: Subscription;
+    private subscription: Subscription;
+    private alerts: Subscription;
     
     private users: Array<ChatUser>;
-    private defaultPic:string = '../../assets/img/avatar.png';
-    
+    private defaultPic:string;
     private currentUser: ChatUser;
 
     onlineUsers: Array<ChatUser>  = [];
@@ -30,8 +30,11 @@ export class ChatPage implements OnDestroy {
     searchControl: FormControl;
     chatAlerts = {};
 
-    constructor(public navCtrl: NavController, private auth: AuthService, private chatService: SocketService) {
+    constructor(public navCtrl: NavController, private auth: AuthService, 
+    private chatService: SocketService, private conf: ConfService) {
         this.searchControl = new FormControl();
+
+        this.defaultPic = this.conf.defaultUserPhoto();
         
         this.subscription = this.chatService.getUsers().subscribe(data => { 
             this.users = data; 

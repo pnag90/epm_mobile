@@ -2,6 +2,7 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
+import { ConfService } from '../providers/conf-service';
 import { AuthService } from '../providers/auth-service';
 import { SocketService } from '../providers/socket-service';
 import { MomentPipe } from '../pipes/moment.pipe';
@@ -44,6 +45,7 @@ import { MessagesPage } from '../pages/chat/messages/messages';
     ],
     providers: [
         Storage,
+        ConfService,
         AuthService,
         SocketService,
         {provide: ErrorHandler, useClass: IonicErrorHandler}]

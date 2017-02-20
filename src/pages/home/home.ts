@@ -31,6 +31,7 @@ export class HomePage {
 
             this.loadAlerts();
         }
+        this.worklistEpisodes = null;
     }
 
     private loadAlerts() {

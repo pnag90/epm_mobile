@@ -1,3 +1,4 @@
+import { ConfService } from './conf-service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Http, Headers } from '@angular/http';
@@ -10,10 +11,10 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class AuthService {
     private currentUser: User;
-    public epmUrl: string;
+    private requestUrl: string;
 
-    constructor(private http: Http, private storage: Storage) {
-        this.epmUrl = "http://192.168.19.112:8080/EPMJ2EE/mvc"; //https://epm.first-global.com/mvc";
+    constructor(private http: Http, private storage: Storage, private conf:ConfService) {
+        this.requestUrl = conf.mvc();
     }
 
     public getUser() : User {
@@ -34,9 +35,6 @@ export class AuthService {
             languageCode: epmSession.languageCode,
             photo: authUser.photo || null
         });
-
-        // set key value
-        //this.storage.set('epmUser', user);
         this.currentUser = user;
     }
 
@@ -83,8 +81,6 @@ export class AuthService {
                         if ( info && (info.appCustomInfo) && (info.appCustomInfo.session) ) {
                             this.setUser(info);
                             this.setCredentials(credentials);
-                            //observer.next(true);
-                            //observer.complete();
                             return {isError: false, error: null};
                         } else {
                             return {isError: true, error: error};
@@ -102,13 +98,12 @@ export class AuthService {
 
     private authenticate(username,password,institution) {
 
-        let authUrl     = this.epmUrl + "/security/fdfAuthenticate";
+        let authUrl     = this.requestUrl + "/security/fdfAuthenticate";
         let authBody    = `?username=${username}&password=${Md5.hashStr(password)}&appId=181&institutionCode=${institution}`;
         let headers = new Headers();
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        //headers.append('Content-Type', 'application/json;charset=UTF-8');
 
-        let accountPath = this.epmUrl + "/fdf/security/account";
+        let accountPath = this.requestUrl + "/fdf/security/account";
 
         return new Promise((resolve, reject) => {
             this.http.post(authUrl + authBody, null, { withCredentials: true }).subscribe(

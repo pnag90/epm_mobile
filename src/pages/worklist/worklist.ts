@@ -1,3 +1,4 @@
+import { ConfService } from '../../providers/conf-service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../providers/auth-service';
 import { Http } from '@angular/http';
@@ -12,18 +13,21 @@ import 'moment/locale/pt-br';
 export class WorklistPage implements OnInit{
     private user : User;
     private episodes : any;
-    private totalEpisodes : number = 0;
-    private worklistUrl : string = "http://192.168.19.112:8080/EPMJ2EE/mvc" + "/epm/mobile/biz/worklist";
-    private defaultPic:string = '../../assets/img/avatar.png';
+    private totalEpisodes : number;
+    private worklistUrl : string = "/epm/mobile/biz/worklist";
+    private defaultPic:string;
 
     private searchTxt : string = null;
     private searchKey : string = null;
     private currentDate :string = moment().toISOString();
 
-    constructor(private auth: AuthService, private http:Http) {}
+    constructor(private auth: AuthService, private http:Http, private conf:ConfService) {
+        this.defaultPic = this.conf.defaultUserPhoto();
+    }
 
     ngOnInit():void {
         this.user = this.auth.getUser();
+        this.totalEpisodes = 0;
         this.getWorklist();
     }
 
@@ -35,7 +39,7 @@ export class WorklistPage implements OnInit{
 
     getWorklist():void{
         if(this.currentDate!==null){
-            let url : string = this.worklistUrl + '?d=' + moment(this.currentDate).format("DDMMYYYY");          
+            let url : string = this.conf.mvc() + this.worklistUrl + '?d=' + moment(this.currentDate).format("DDMMYYYY");          
             if (this.searchTxt != null && this.searchTxt.length > 1) {
                 this.searchKey = this.searchTxt;
                 url = url + '&s=' + this.searchKey;
@@ -43,6 +47,7 @@ export class WorklistPage implements OnInit{
             this.http.get(url, { withCredentials: true }).map(res => res.json()).subscribe(res => {
                 if(res && !res.isError && res.result){
                     this.episodes = this.getEpisodes(res.result.returnvalue || []);
+                    this.totalEpisodes = this.episodes.length || 0;
                     console.log(this.episodes);
                 } else  {
                     console.error("erro pedido episodios");

@@ -1,9 +1,10 @@
+import { ConfService } from './conf-service';
 import { Injectable, EventEmitter } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { User, ChatUser, ChatMessage } from '../models/epm-types';
+import { User, ChatUser } from '../models/epm-types';
 import { AuthService } from '../providers/auth-service';
 import 'rxjs/add/operator/map';
 import * as io from 'socket.io-client';
@@ -12,8 +13,6 @@ import * as moment from 'moment';
 
 @Injectable()
 export class SocketService {
-    private socketHost: string;
-    private epmUrl:string;   
     private socket: any; 
 
     /* events */
@@ -32,14 +31,10 @@ export class SocketService {
     private chatUsers = new BehaviorSubject([]); 
     private chatAlerts = new BehaviorSubject({}); 
 
-    constructor(private http: Http, private storage: Storage, private auth: AuthService) {
-        this.epmUrl     = auth.epmUrl;
-        this.socketHost = "http://epmteste.first.pt:3001"; 
-    }
-
+    constructor(private http: Http, private storage: Storage, private conf: ConfService, private auth: AuthService) {}
 
     public initialize() : void{
-        this.socket = io.connect(this.socketHost);
+        this.socket = io.connect(this.conf.socket());
 
         this.storage.get('epmChatMessages').then((val) => {
             if(val !== undefined && val !== null){
@@ -124,7 +119,7 @@ export class SocketService {
                 this.chatUsersArray = this.getChatUsersStatus(onlineUsers,val);
                 this.refreshUsers(); //resolve(true);
             }else{
-                this.http.get(this.epmUrl+'/epm/utils/chat/users', { withCredentials: true }).map(res => res.json()).subscribe(
+                this.http.get(this.conf.mvc() + '/epm/utils/chat/users', { withCredentials: true }).map(res => res.json()).subscribe(
                     res => {
                         let result = res.result || [];
                         this.chatUsersArray = this.getChatUsersStatus(onlineUsers,result);

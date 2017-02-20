@@ -22,7 +22,6 @@ export class MessagesPage implements OnDestroy {
 
   private chatMessages: any = {};
   private userMessages: Array<ChatMessage> = [];
-  private chatAlerts: any = {};
   
   private chatBox: string;
   private chatUser: ChatUser = null;
