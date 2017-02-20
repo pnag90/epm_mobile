@@ -1,7 +1,7 @@
 {
   "name": "epm_mobile",
   "author": "Pedro Goncalves",
-  "homepage": "http://epm.first-global.com/clinics",
+  "homepage": "http://epm.first-global.com/m",
   "description": "",
   "private": true,
   "main": "index.js",
