@@ -5,7 +5,7 @@ import { ConfService } from '../../providers/conf-service';
 import { AuthService } from '../../providers/auth-service';
 import { User, Episode } from '../../models/epm-types';
 import { Http } from '@angular/http';
-import { TranslateService } from 'ng2-translate/ng2-translate';
+import { TranslateService } from 'ng2-translate';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
 
@@ -25,10 +25,12 @@ export class WorklistPage implements OnInit{
     private searchKey : string = null;
     private currentDate :string = moment().toISOString();
     private worklistDate :string = '';
+    private translate;
 
-    constructor(private auth: AuthService, private http:Http, private conf:ConfService, private navCtrl:NavController, private translate: TranslateService) {
+    constructor(translate: TranslateService, private auth: AuthService, private http:Http, private conf:ConfService, private navCtrl:NavController) {
         this.defaultPic = this.conf.defaultUserPhoto();
         this.loading = false;
+        this.translate = translate;
     }
 
     ngOnInit():void {

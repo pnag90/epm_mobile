@@ -1,7 +1,8 @@
 import { NgModule, ErrorHandler } from '@angular/core';
+import { HttpModule, Http } from '@angular/http';
 import { Storage } from '@ionic/storage';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { TranslateModule } from 'ng2-translate/ng2-translate';
+import { TranslateModule, TranslateLoader, TranslateStaticLoader } from 'ng2-translate';
 
 import { ConfService } from '../providers/conf-service';
 import { AuthService } from '../providers/auth-service';
@@ -19,6 +20,9 @@ import { OptionsPage } from '../pages/options/options';
 import { ChatPage } from '../pages/chat/chat';
 import { MessagesPage } from '../pages/chat/messages/messages';
 
+export function createTranslateLoader(http: Http) {
+  return new TranslateStaticLoader(http, './assets/i18n', '.json');
+}
 
 @NgModule({
     declarations: [
@@ -36,7 +40,12 @@ import { MessagesPage } from '../pages/chat/messages/messages';
         MessageComponent
     ],
     imports: [
-        TranslateModule.forRoot(),
+        HttpModule,
+        TranslateModule.forRoot({
+            provide: TranslateLoader,
+            useFactory: (createTranslateLoader),
+            deps: [Http]
+        }),
         IonicModule.forRoot(MyApp)
     ],
     bootstrap: [IonicApp],
@@ -56,7 +65,6 @@ import { MessagesPage } from '../pages/chat/messages/messages';
         ConfService,
         AuthService,
         SocketService,
-        TranslateModule,
         {provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
 export class AppModule {}
