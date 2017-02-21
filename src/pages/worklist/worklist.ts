@@ -1,10 +1,11 @@
 import { NavController } from 'ionic-angular';
+import { Component, OnInit } from '@angular/core';
 import { EpisodePage } from './episode/episode';
 import { ConfService } from '../../providers/conf-service';
-import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../providers/auth-service';
-import { Http } from '@angular/http';
 import { User, Episode } from '../../models/epm-types';
+import { Http } from '@angular/http';
+import { TranslateService } from 'ng2-translate/ng2-translate';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
 
@@ -25,7 +26,7 @@ export class WorklistPage implements OnInit{
     private currentDate :string = moment().toISOString();
     private worklistDate :string = '';
 
-    constructor(private auth: AuthService, private http:Http, private conf:ConfService, private navCtrl:NavController) {
+    constructor(private auth: AuthService, private http:Http, private conf:ConfService, private navCtrl:NavController, private translate: TranslateService) {
         this.defaultPic = this.conf.defaultUserPhoto();
         this.loading = false;
     }

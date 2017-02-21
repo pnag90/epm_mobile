@@ -1,11 +1,18 @@
 <ion-content>
+    <div *ngIf="loading" class="spinner-container">
+        <ion-spinner></ion-spinner>
+    </div>
+
     <ion-item>
         <ion-label>Data</ion-label>
         <ion-datetime displayFormat="DD/MM/YYYY" 
                       pickerFormat="DD MM YYYY" 
                       [(ngModel)]="currentDate" 
                       (ionChange)="dateChanged()"
-                      yearValues="2017"></ion-datetime>
+                      yearValues="2017"
+                      [doneText]="translate.instant('DONE')"
+                      [cancelText]="translate.instant('CANCEL')">
+        </ion-datetime>
     </ion-item>
     <ion-list>
         <ion-item *ngFor="let episode of episodes" (click)="openEpisode(episode)">

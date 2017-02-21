@@ -9,8 +9,8 @@ export class ConfService {
 
     constructor() {
         this.EPM_URL        = "http://192.168.19.112:8080/EPMJ2EE";
-        this.EPM_SOCKET_URL = "http://epmteste.first.pt:3001"; 
-        this.EPM_DEFAULT_USER_PIC = "../assets/img/avatar.png";
+        this.EPM_SOCKET_URL = "http://192.168.20.71:3001"; 
+        this.EPM_DEFAULT_USER_PIC = "assets/img/avatar.png";
     }
 
 
