@@ -151,4 +151,8 @@ export class AuthService {
             observer.complete();
         });
     }
+
+    public isFIRST() :boolean {
+        return this.currentUser.entityCode == 'FIRST' ;
+    }
 }

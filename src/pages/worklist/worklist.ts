@@ -1,3 +1,5 @@
+import { NavController } from 'ionic-angular';
+import { EpisodePage } from './episode/episode';
 import { ConfService } from '../../providers/conf-service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../providers/auth-service';
@@ -16,13 +18,16 @@ export class WorklistPage implements OnInit{
     private totalEpisodes : number;
     private worklistUrl : string = "/epm/mobile/biz/worklist";
     private defaultPic:string;
+    private loading:boolean;
 
     private searchTxt : string = null;
     private searchKey : string = null;
     private currentDate :string = moment().toISOString();
+    private worklistDate :string = '';
 
-    constructor(private auth: AuthService, private http:Http, private conf:ConfService) {
+    constructor(private auth: AuthService, private http:Http, private conf:ConfService, private navCtrl:NavController) {
         this.defaultPic = this.conf.defaultUserPhoto();
+        this.loading = false;
     }
 
     ngOnInit():void {
@@ -37,8 +42,15 @@ export class WorklistPage implements OnInit{
         }
     }
 
+    dateChanged():void{
+        if(this.worklistDate != this.currentDate){
+            this.getWorklist();
+        }
+    }
+
     getWorklist():void{
         if(this.currentDate!==null){
+            this.loading = true;
             let url : string = this.conf.mvc() + this.worklistUrl + '?d=' + moment(this.currentDate).format("DDMMYYYY");          
             if (this.searchTxt != null && this.searchTxt.length > 1) {
                 this.searchKey = this.searchTxt;
@@ -48,9 +60,12 @@ export class WorklistPage implements OnInit{
                 if(res && !res.isError && res.result){
                     this.episodes = this.getEpisodes(res.result.returnvalue || []);
                     this.totalEpisodes = this.episodes.length || 0;
+                    this.worklistDate = this.currentDate;
                     console.log(this.episodes);
+                    this.loading = false;
                 } else  {
                     console.error("erro pedido episodios");
+                    this.loading = false;
                 }                
             });
         }
@@ -74,6 +89,7 @@ export class WorklistPage implements OnInit{
                     patientBirthDate: a.patientBirthdateUTC ? moment(a.patientBirthdateUTC).format("DD-MM-YYYY") : null,
                     patientFk: a.patientFk,
                     patientName: a.patientName,
+                    patientPhoto: a.patientPhoto || null,
                     patientProcessNum: a.patientProcessNum,
                     patientSex: a.patientSex,
                     scheduledEndDate: a.scheduledEndDateUTC ?  moment(a.scheduledEndDateUTC).format("HH:mm") : null,
@@ -115,6 +131,12 @@ export class WorklistPage implements OnInit{
             stateColor   = 'app-state-FAL';
         }
         return stateColor;
+    }
+
+     openEpisode(episode:Episode){
+        if(episode){
+            this.navCtrl.push(EpisodePage, {episode:episode});
+        }
     }
 
 

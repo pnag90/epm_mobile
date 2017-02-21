@@ -1,10 +1,14 @@
 <ion-content>
     <ion-item>
         <ion-label>Data</ion-label>
-        <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" [(ngModel)]="currentDate"></ion-datetime>
+        <ion-datetime displayFormat="DD/MM/YYYY" 
+                      pickerFormat="DD MM YYYY" 
+                      [(ngModel)]="currentDate" 
+                      (ionChange)="dateChanged()"
+                      yearValues="2017"></ion-datetime>
     </ion-item>
     <ion-list>
-        <ion-item *ngFor="let episode of episodes">
+        <ion-item *ngFor="let episode of episodes" (click)="openEpisode(episode)">
             <ion-avatar item-left>
                 <ion-avatar item-left>
                 <img [src]="'data:image/jpeg;base64,'+episode.patientPhoto | safe: 'url'" class="profile-pic" *ngIf="episode.patientPhoto"/>

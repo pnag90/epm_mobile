@@ -1,3 +1,4 @@
+import { OptionsPage } from '../options/options';
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
@@ -13,23 +14,30 @@ import { Subscription } from 'rxjs/Subscription';
     templateUrl: 'home.html'
 })
 export class HomePage {
-    subscription: Subscription;
-    chatPage : any;
-    profilePage : any;
-    worklistPage : any;
+    private subscription: Subscription;
+    private chatPage: any;
+    private profilePage: any;
+    private worklistPage: any;
+    private optionsPage: any;
 
     private chatAlerts: string;
     private worklistEpisodes: string;
+
+    private developer: boolean;
 
     constructor(private nav: NavController, private auth: AuthService, private socket: SocketService) {
         this.chatPage = ChatPage;
         this.profilePage = ProfilePage;
         this.worklistPage = WorklistPage;
+        this.optionsPage = OptionsPage;
+        this.developer = false;
 
         if(this.auth.isLogged()){
             this.socket.initialize();
 
+            this.developer = this.auth.isFIRST();
             this.loadAlerts();
+         
         }
         this.worklistEpisodes = null;
     }

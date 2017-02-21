@@ -39,6 +39,7 @@ export class Episode {
     patientBirthDate:string;
     patientFk:string;
     patientName:string;
+    patientPhoto:string;
     patientProcessNum:string;
     patientSex:string;
     scheduledEndDate:string;

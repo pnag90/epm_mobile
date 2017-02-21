@@ -12,7 +12,9 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { ProfilePage } from '../pages/profile/profile';
+import { EpisodePage } from '../pages/worklist/episode/episode';
 import { WorklistPage } from '../pages/worklist/worklist';
+import { OptionsPage } from '../pages/options/options';
 import { ChatPage } from '../pages/chat/chat';
 import { MessagesPage } from '../pages/chat/messages/messages';
 
@@ -26,6 +28,8 @@ import { MessagesPage } from '../pages/chat/messages/messages';
         LoginPage,
         ProfilePage,
         WorklistPage,
+        EpisodePage,
+        OptionsPage,
         ChatPage,
         MessagesPage,
         MessageComponent
@@ -40,6 +44,8 @@ import { MessagesPage } from '../pages/chat/messages/messages';
         LoginPage,
         ProfilePage,
         WorklistPage,
+        EpisodePage,
+        OptionsPage,
         ChatPage,
         MessagesPage
     ],

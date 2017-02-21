@@ -1,0 +1,31 @@
+<ion-content>
+    
+    <ion-item>
+        <ion-avatar class="user-photo">
+            <img [src]="episode.patientPhoto" *ngIf="episode.patientPhoto">
+            <img src="../assets/img/avatar.png" *ngIf="!episode.patientPhoto">
+        </ion-avatar>
+    </ion-item>
+    
+    <ion-item>
+        <ion-label stacked>Utente</ion-label>
+        <ion-input [(ngModel)]="episode.patientName" readonly></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label stacked>EFR</ion-label>
+        <ion-input [(ngModel)]="episode.insuranceDesc" readonly></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label stacked>Hora</ion-label>
+        <ion-input [(ngModel)]="episode.scheduledStartDate" readonly></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label stacked>Serviço</ion-label>
+        <ion-input [(ngModel)]="episode.serviceName" readonly></ion-input>
+    </ion-item>
+
+
+</ion-content>

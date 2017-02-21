@@ -1,6 +1,6 @@
 import { ConfService } from './conf-service';
-import { Injectable, EventEmitter } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
