@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="epm.mobile" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>ePM Mobile</name>
   <description>An awesome ePM app.</description>
-  <author email="pedro.goncalves@first.pt" href="https://epm.first-global.com/m">Pedro Fcom</author>
+  <author email="pedro.goncalves@first-global.com" href="https://epm.first-global.com/m">Pedro Fcom</author>
   <content src="index.html"/>
   <access origin="*"/>
   <allow-navigation href="http://ionic.local/*"/>
