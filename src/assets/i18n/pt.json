@@ -1,8 +1,16 @@
 {
   "HELLO": "Ola",
+  "EPISODE": "Episódio",
   "PATIENT": "Utente",
   "NAME": "Nome",
+  "EMAIL": "Email",
+  "DATE": "Data",
+  "HOUR": "Hora",
+  "SERVICE": "Serviço",
+  "EFR": "Efr",
   "BACK": "",
   "DONE": "Selecionar",
-  "CANCEL": "Cancelar"
+  "CANCEL": "Cancelar",
+  "SEND": "Enviar",
+  "OPTIONS": "Opções"
 }

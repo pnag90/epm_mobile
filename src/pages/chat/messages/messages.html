@@ -1,9 +1,8 @@
-<ion-header>
+<ion-content>
   <ion-navbar color="secondary">
     <ion-title>{{chatUser.userName}}</ion-title>
   </ion-navbar>
-</ion-header>
-<ion-content>
+
   <div class="loader-center" *ngIf="loading">
     <div class="loader">
       <ion-spinner></ion-spinner>
@@ -26,7 +25,8 @@
     <ion-item>
       <ion-input formControlName="message" [(ngModel)]="chatBox" [disabled]="chatUser.state!='online'"></ion-input>
       <button ion-button clear (click)="send(chatBox)" item-right [disabled]="chatUser.state!='online'">
-          <ion-icon class="footer-btn" name="send"></ion-icon>
+          {{ 'SEND' | translate}}
+          <ion-icon class="footer-btn" name="send" style="padding-left: 5px;"></ion-icon>
       </button>
     </ion-item>
   </form>

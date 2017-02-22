@@ -3,17 +3,17 @@
     <ion-item>
         <ion-avatar class="user-photo">
             <img [src]="user.photo" *ngIf="user.photo">
-            <img src="../assets/img/avatar.png" *ngIf="!user.photo">
+            <img [src]="defaultPic" *ngIf="!user.photo">
         </ion-avatar>
     </ion-item>
     
     <ion-item>
-        <ion-label stacked>Nome</ion-label>
+        <ion-label stacked>{{ 'NAME' | translate}}</ion-label>
         <ion-input [(ngModel)]="user.userFullName" readonly></ion-input>
     </ion-item>
 
     <ion-item>
-        <ion-label stacked>Email</ion-label>
+        <ion-label stacked>{{ 'EMAIL' | translate}}</ion-label>
         <ion-input type="email" [(ngModel)]="user.email" readonly></ion-input>
     </ion-item>
 </ion-content>
