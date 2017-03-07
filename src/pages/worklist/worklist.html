@@ -17,13 +17,11 @@
     <ion-list>
         <ion-item *ngFor="let episode of episodes" (click)="openEpisode(episode)">
             <ion-avatar item-left>
-                <ion-avatar item-left>
                 <img [src]="'data:image/jpeg;base64,'+episode.patientPhoto | safe: 'url'" class="profile-pic" *ngIf="episode.patientPhoto"/>
-                <img [src]="defaultPic" class="profile-pic" *ngIf="!episode.patientPhoto"/>
-            </ion-avatar>
+                <img [src]="defaultPic" *ngIf="!episode.patientPhoto">
             </ion-avatar>
             <div class="app-state" [ngClass]="episode.colorState"></div>
-            <h2> {{ episode.scheduledStartDate }} </h2>
+            <h2> {{ episode.scheduledStartDateTime }} </h2>
             <h3> {{ episode.patientName }}, {{ episode.patientAge }} anos </h3>
             <p> {{ episode.areaCode }} - {{ episode.serviceName }} </p>
         </ion-item>

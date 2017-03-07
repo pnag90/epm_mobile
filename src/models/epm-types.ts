@@ -40,10 +40,15 @@ export class Episode {
     patientFk:string;
     patientName:string;
     patientPhoto:string;
+    patientAddress:string;
+    patientMail:string;
+    patientPhone:string;
     patientProcessNum:string;
     patientSex:string;
     scheduledEndDate:string;
+    scheduledEndDateTime:string;
     scheduledStartDate:string;
+    scheduledStartDateTime:string;
     serviceFk:number;
     serviceName:string;
     teamFk:number;

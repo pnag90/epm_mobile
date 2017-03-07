@@ -1,3 +1,4 @@
+import { Http } from '@angular/http';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Episode } from '../../../models/epm-types';
@@ -10,10 +11,33 @@ import { ConfService } from '../../../providers/conf-service';
 export class EpisodePage {
     public episode : Episode;
     private defaultPic: string;
+    private segment: string = 'episode';
+    private history: Array<Episode>;
+    private start: string = "0";
+    private size: string = "12";
+    private loading: boolean;
 
-    constructor(private navCtrl: NavController, public params: NavParams, private conf:ConfService) {
+    constructor(private navCtrl: NavController, public params: NavParams, private conf:ConfService, private http:Http) {
+        this.loading = false;
         this.episode = this.params.get('episode');
         this.defaultPic = this.conf.defaultUserPhoto();
+        this.getPatientHistory(this.episode.patientFk);
+    }
+
+    getPatientHistory(patientId:string){
+        this.loading = true;
+        let url:string = this.conf.mvc() + '/epm/mobile/biz/patienthistory/' + patientId + "?start=" + this.start + "&size=" + this.size;
+        this.http.get(url, { withCredentials: true }).map(res => res.json()).subscribe(
+            res => {
+                this.history = this.conf.getEpisodes(res.result.returnvalue || []);
+                this.loading = false;
+            },
+            err => {
+                console.error(err);
+                this.history = [];
+                this.loading = false;
+            }
+        ); 
     }
 
     goBack() {

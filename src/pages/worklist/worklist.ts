@@ -61,7 +61,7 @@ export class WorklistPage implements OnInit{
             }
             this.http.get(url, { withCredentials: true }).map(res => res.json()).subscribe(res => {
                 if(res && !res.isError && res.result){
-                    this.episodes = this.getEpisodes(res.result.returnvalue || []);
+                    this.episodes = this.conf.getEpisodes(res.result.returnvalue || []);
                     this.totalEpisodes = this.episodes.length || 0;
                     this.worklistDate = this.currentDate;
                     console.log(this.episodes);
@@ -74,69 +74,7 @@ export class WorklistPage implements OnInit{
         }
     }
 
-    getEpisodes(arr:any):any{
-        let items: Array<Episode> = [];
-        if(arr !== null){
-            for(let a of arr){
-                items.push({
-                    areaCode: a.areaCode,
-                    areaFk: a.areaFk,
-                    episodeFk: a.episodeFk,
-                    episodeState: a.episodeState,
-                    episodeStatus: a.episodeStatus,
-                    colorState: this.getColor(a.episodeState,a.episodeStatus),
-                    insuranceDesc: a.insuranceDesc,
-                    insuranceFk: a.insuranceFk,
-                    observations: a.observations,
-                    patientAge: a.patientAge,
-                    patientBirthDate: a.patientBirthdateUTC ? moment(a.patientBirthdateUTC).format("DD-MM-YYYY") : null,
-                    patientFk: a.patientFk,
-                    patientName: a.patientName,
-                    patientPhoto: a.patientPhoto || null,
-                    patientProcessNum: a.patientProcessNum,
-                    patientSex: a.patientSex,
-                    scheduledEndDate: a.scheduledEndDateUTC ?  moment(a.scheduledEndDateUTC).format("HH:mm") : null,
-                    scheduledStartDate: a.scheduledStartDateUTC ?  moment(a.scheduledStartDateUTC).format("HH:mm") : null,
-                    serviceFk: a.serviceFk,
-                    serviceName: a.serviceName,
-                    teamFk: a.teamFk,
-                    teamName: a.teamName,
-                });
-            }
-        }
-        return items;
-    }
-
-    getColor(state:string,status:string):string {
-        var stateColor:string = "";
-        if( state == 'A' || state == 'D' ){
-            stateColor   = 'app-state-ANU';
-        }
-        else if(status == '0' || status == null){
-            stateColor   = '';
-        }
-        else if( state == 'M' || state == 'R' ){
-            // CHEGOU
-            if(status == '1'){
-                stateColor   = 'app-state-CHE';
-            }
-            // CHAMADO
-            else if(status == '2'){
-                stateColor   = 'app-state-CHA';
-            }
-            // SAIU
-            else if(status == '3'){
-                stateColor   = 'app-state-SAI';
-            }
-        }
-        // FALTA
-        else if( state == 'F' ){
-            stateColor   = 'app-state-FAL';
-        }
-        return stateColor;
-    }
-
-     openEpisode(episode:Episode){
+    openEpisode(episode:Episode){
         if(episode){
             this.navCtrl.push(EpisodePage, {episode:episode});
         }
