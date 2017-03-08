@@ -136,6 +136,7 @@ export class SocketService {
 
     private getChatUsersStatus(onlineUsers: Array<number>, users: Array<ChatUser>) : Array<ChatUser> {
         let usersArr : Array<ChatUser> = [];
+
         for (var i=0; i < users.length; i++) {
             if (users[i].userId != this.session.userId) {
                 usersArr.push({
@@ -240,13 +241,16 @@ export class SocketService {
     
 
     /* aux */
-    isInArray(arr,id) : boolean{
+    private isInArray(arr,id) : boolean{
+        if(arr==null || arr.length==0){
+            return true;
+        }
         var str_ = id + '';
         var num_ = parseInt(id);
         return arr.includes(str_) || arr.includes(num_);
     }
 
-    isSameTime(date1_,date2_) : boolean {
+    public isSameTime(date1_,date2_) : boolean {
         return moment(date1_).format('YYYYMMDD_HHmm') == moment(date2_).format('YYYYMMDD_HHmm');
     }
 

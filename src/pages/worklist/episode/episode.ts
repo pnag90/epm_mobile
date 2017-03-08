@@ -11,7 +11,7 @@ import { ConfService } from '../../../providers/conf-service';
 export class EpisodePage {
     public episode : Episode;
     private defaultPic: string;
-    private segment: string = 'episode';
+    //private segment: string = 'episode';
     private history: Array<Episode>;
     private start: string = "0";
     private size: string = "12";
