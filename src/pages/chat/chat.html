@@ -5,6 +5,10 @@
         <ion-spinner></ion-spinner>
     </div>
 
+    <div *ngIf="!searching && (users==null || users.length==0)">
+        <p>{{ 'CHAT_NO_USERS' | translate}}</p>
+    </div>
+    
     <ion-list>
         <ion-list-header *ngIf="onlineUsers.length>0">Online</ion-list-header>
         <ion-item *ngFor="let onChat of onlineUsers" (click)="openUser(onChat)">
