@@ -142,10 +142,7 @@ export class AuthService {
     public logout() {
         return Observable.create(observer => {
             this.currentUser = null;
-            this.storage.remove('epmUser');
-            this.storage.remove('epmUserCredentials'); 
-            this.storage.remove('epmChatUsers'); 
-            this.storage.remove('epmChatMessages'); 
+            this.storage.clear();
             window.localStorage.clear();      
             observer.next(true);
             observer.complete();
