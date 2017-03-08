@@ -33,7 +33,7 @@
 
             <ion-item>
                 <ion-label stacked>{{ 'HOUR' | translate}}</ion-label>
-                <ion-input [(ngModel)]="episode.scheduledStartDate" readonly></ion-input>
+                <ion-input [(ngModel)]="episode.scheduledStartDateTime" readonly></ion-input>
             </ion-item>
 
             <ion-item>
@@ -45,8 +45,8 @@
         <div *ngSwitchCase="'history'">
             <ion-list no-lines>
                 <ion-item *ngFor="let his of history">
-                    <span item-left> {{ his.scheduledStartDate }} {{ his.scheduledStartDateTime }} </span>
-                    <span> {{ his.teamName }}, {{ episode.serviceName }}</span>
+                    <h2 item-left> {{ his.scheduledStartDate }} {{ his.scheduledStartDateTime }} </h2>
+                    <p> {{ his.teamName }}, {{ episode.serviceName }}</p>
                 </ion-item>
             </ion-list>
         </div>
