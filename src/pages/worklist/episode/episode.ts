@@ -11,7 +11,7 @@ import { ConfService } from '../../../providers/conf-service';
 export class EpisodePage {
     public episode : Episode;
     private defaultPic: string;
-    //private segment: string = 'episode';
+    private segment: string;
     private history: Array<Episode>;
     private start: string = "0";
     private size: string = "12";
@@ -19,6 +19,7 @@ export class EpisodePage {
 
     constructor(private navCtrl: NavController, public params: NavParams, private conf:ConfService, private http:Http) {
         this.loading = false;
+        this.segment = 'episode';
         this.episode = this.params.get('episode');
         this.defaultPic = this.conf.defaultUserPhoto();
         this.getPatientHistory(this.episode.patientFk);

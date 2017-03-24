@@ -54,4 +54,9 @@ page-episode {
         
     }
 
+    // fix: back button with segment in bar
+    ion-navbar button.back-button{
+        z-index: 10;
+    }
+
 }

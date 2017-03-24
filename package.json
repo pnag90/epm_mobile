@@ -1,8 +1,9 @@
 {
   "name": "epm_mobile",
   "author": "Pedro Goncalves",
+  "version": "0.0.2",
   "homepage": "http://epm.first-global.com/m",
-  "description": "",
+  "description": "A mobile application for ePM",
   "private": true,
   "main": "index.js",
   "scripts": {
@@ -29,12 +30,19 @@
     "ng2-translate": "^5.0.0",
     "rxjs": "5.0.0-beta.12",
     "socket.io-client": "^1.7.2",
-    "sw-toolbox": "3.4.0",
     "ts-md5": "^1.2.0",
     "zone.js": "0.6.26"
   },
   "devDependencies": {
     "@ionic/app-scripts": "1.1.0",
+    "sw-toolbox": "3.4.0",
     "typescript": "2.0.9"
-  }
+  },
+  "keywords": [
+    "epm",
+    "epm_clinics",
+    "clinics",
+    "first",
+    "com"
+  ]
 }

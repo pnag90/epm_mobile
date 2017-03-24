@@ -14,7 +14,10 @@ import { AuthService } from '../providers/auth-service';
 export class MyApp {
     rootPage = null;
 
-    constructor(platform: Platform, translate: TranslateService, private auth: AuthService, private config: Config) {
+    constructor(platform: Platform,
+        translate: TranslateService,
+        private auth: AuthService,
+        private config: Config) {
         platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
@@ -39,6 +42,7 @@ export class MyApp {
     }
 
     initializeApp() {
+        this.watchForNetworkChanges();
         /*this.platform.ready().then(() => {
             console.log('Platform ready');
         });*/
@@ -46,11 +50,27 @@ export class MyApp {
 
     checkPreviousAuthorization(): void {
         this.auth.hasPreviousAuthorization().then((isAuthenticated) => {
-            if(!isAuthenticated) {
+            if (!isAuthenticated) {
                 this.rootPage = LoginPage;
             } else {
                 this.rootPage = HomePage;
             }
         })
     }
+
+    watchForNetworkChanges() {
+        // watch network for a disconnect
+        document.addEventListener("offline", this.onOffline, false);
+        // watch network for a connection
+        document.addEventListener("online", this.onOnline, false);
+    }
+
+    onOffline() {
+         console.log('network was disconnected :-(');
+    }
+
+    onOnline() {
+        console.log('network connected!');
+    }
+
 }

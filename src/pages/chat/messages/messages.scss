@@ -1,23 +1,5 @@
 page-messages {
-  .spinner {
-    z-index: 1;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    text-align: center;
-    background-color: white;
-    ion-spinner {
-      left: 0;
-      right: 0;
-      bottom: 0;
-      top: 0;
-      margin: auto;
-    }
-  }
-  /* allows the bar-footer to be elastic /*
-/* optionally set a max-height */
-  /* maxlength on the textarea will prevent /*
-/* it from getting too large also */
+
   .bar-footer {
     overflow: visible !important;
   }
@@ -144,21 +126,30 @@ page-messages {
     color: #3b88c3;
     text-decoration: none;
   }
+  
+  
   /* loading */
-  .loader-center {
-    height: 100%;
-    display: flex;
-    -webkit-box-direction: normal;
-    -moz-box-direction: normal;
-    -webkit-box-orient: horizontal;
-    -moz-box-orient: horizontal;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-content: stretch;
-    align-items: center;
-  }
-  .loader .ion-loading-c {
-    font-size: 64px;
-  }
+  .spinner-container {
+        z-index: 9999;
+        transition: z-index 0.2s step-start;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+
+        .backdrop {
+            opacity: 0.3;
+        }
+
+        ion-spinner {
+            width: 60px;
+            height: 60px;
+        }
+        
+    }
+    
 }
