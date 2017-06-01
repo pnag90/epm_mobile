@@ -16,6 +16,7 @@ export class EpisodePage {
     private start: string = "0";
     private size: string = "12";
     private loading: boolean;
+    private historyUrl: string = '/hiscore/mobilebiz/patienthistory';
 
     constructor(private navCtrl: NavController, public params: NavParams, private conf:ConfService, private http:Http) {
         this.loading = false;
@@ -27,7 +28,7 @@ export class EpisodePage {
 
     getPatientHistory(patientId:string){
         this.loading = true;
-        let url:string = this.conf.mvc() + '/epm/mobile/biz/patienthistory/' + patientId + "?start=" + this.start + "&size=" + this.size;
+        let url:string = this.conf.mvc() + this.historyUrl + '/' + patientId + "?start=" + this.start + "&size=" + this.size;
         this.http.get(url, { withCredentials: true }).map(res => res.json()).subscribe(
             res => {
                 this.history = this.conf.getEpisodes(res.result.returnvalue || []);

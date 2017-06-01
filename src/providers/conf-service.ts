@@ -11,8 +11,13 @@ export class ConfService {
     private EPM_DEFAULT_USER_PIC: string;
 
     constructor() {
-        this.EPM_URL        = "https://epm.first-global.com"; // "http://192.168.19.112:8080/EPMJ2EE";
-        this.EPM_SOCKET_URL = "https://epm.first-global.com:8886"; // "http://192.168.20.71:3001";
+        /*
+            D:  http://192.168.19.112:8080/EPMJ2EE      http://192.168.20.71:3001
+            P:  https://epm.first-global.com            https://epm.first-global.com:8886
+        */
+        this.EPM_URL        = "http://192.168.19.112:8081";
+        this.EPM_SOCKET_URL = "http://192.168.20.71:3001";
+        
         this.EPM_DEFAULT_USER_PIC = "assets/img/avatar.png";
     }
 
@@ -21,7 +26,7 @@ export class ConfService {
     }
 
     public mvc(){
-        return this.EPM_URL + "/mvc";
+        return this.EPM_URL + "/app/rest"; // "/mvc";
     }
     
     public socket(){

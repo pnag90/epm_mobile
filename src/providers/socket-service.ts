@@ -119,7 +119,7 @@ export class SocketService {
                 this.chatUsersArray = this.getChatUsersStatus(onlineUsers,val);
                 this.refreshUsers(); //resolve(true);
             }else{
-                this.http.get(this.conf.mvc() + '/epm/utils/chat/users', { withCredentials: true }).map(res => res.json()).subscribe(
+                this.http.get(this.conf.mvc() + '/hiscore/utils/users', { withCredentials: true }).map(res => res.json()).subscribe(
                     res => {
                         let result = res.result || [];
                         this.chatUsersArray = this.getChatUsersStatus(onlineUsers,result);

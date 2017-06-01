@@ -17,7 +17,7 @@ export class WorklistPage implements OnInit{
     private user : User;
     private episodes : any;
     private totalEpisodes : number;
-    private worklistUrl : string = "/epm/mobile/biz/worklist";
+    private worklistUrl : string =  '/hiscore/mobilebiz/worklist'; // "/epm/mobile/biz/worklist";
     private defaultPic:string;
     private loading:boolean;
 
