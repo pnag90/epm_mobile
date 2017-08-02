@@ -1,10 +1,10 @@
 import { ConfService } from './conf-service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Http, Headers } from '@angular/http';
-import { Storage } from '@ionic/storage';
+import { Http } from '@angular/http';
+import { Storage  } from '@ionic/storage';
 import { Md5 } from 'ts-md5/dist/md5';
-import { User } from '../models/epm-types';
+import { User } from '../providers/epm-types';
 import 'rxjs/add/operator/map';
 
 
@@ -14,7 +14,7 @@ export class AuthService {
     private requestUrl: string;
 
     constructor(private http: Http, private storage: Storage, private conf:ConfService) {
-        this.requestUrl = conf.mvc();
+        this.requestUrl = conf.rest();
     }
 
     public getUser() : User {
@@ -39,7 +39,10 @@ export class AuthService {
     }
 
     private setCredentials(credentials:any):void{
-        this.storage.set('epmUserCredentials', credentials);
+        this.storage.set('epmUserCredentials', credentials).then(
+        () => console.log('Stored item!'),
+    error => console.error('Error storing item', error)
+  );
     }
 
     public hasPreviousAuthorization() {
@@ -100,9 +103,6 @@ export class AuthService {
 
         let authUrl     = this.requestUrl + "/security/fdfAuthenticate";
         let authBody    = `?username=${username}&password=${Md5.hashStr(password)}&appId=181&institutionCode=${institution}`;
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
         let accountPath = this.requestUrl + "/fdf/security/account";
 
         return new Promise((resolve, reject) => {
@@ -150,6 +150,6 @@ export class AuthService {
     }
 
     public isFIRST() :boolean {
-        return this.currentUser.entityCode == 'FIRST' ;
+        return this.currentUser.entityCode.toLocaleLowerCase() == 'first' ;
     }
 }

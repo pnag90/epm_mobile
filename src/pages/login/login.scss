@@ -1,7 +1,6 @@
 page-login {
 
   .login-content {
-    //background: #fafafa;
     background-image: url("../assets/img/bg_01.jpg");
     position: absolute;
     width: 100%;
@@ -35,8 +34,6 @@ page-login {
     }
 
     ion-item  {
-      //border-radius: 30px !important;
-      //padding-left: 30px !important;
       border: none !important;
       background: transparent !important;
       box-shadow: none !important;
@@ -50,7 +47,6 @@ page-login {
         border-style: solid;
         padding-bottom: 10px;
         padding-top: 10px;
-        //border-bottom: 0px !important;
       }
     }
 
@@ -70,7 +66,6 @@ page-login {
     }
 
     .submit-btn {
-      //border-radius: 30px !important;
       color: #fff;
       font-size: 16px;
       line-height: 20px;

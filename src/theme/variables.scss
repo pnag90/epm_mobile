@@ -29,10 +29,16 @@ $colors: (
   danger:     #f53d3d,
   light:      #f4f4f4,
   dark:       #222,
-  header:     #194378 
+  header:     #194378,
+  white:    #ffffff
 );
 
 // header :#063342
+/* pr: #051326
+   light: #f4f4f4,
+  text1: #6D6D6D,
+  text2: #939393,
+  text3: #a7afb2,*/
 
 
 // App iOS Variables
@@ -46,6 +52,12 @@ $colors: (
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
+
+// Use the primary color as the background for the toolbar-md-background
+$toolbar-md-background: color($colors, primary);
+
+// Change the color of the segment button text
+$toolbar-md-active-color: #fff;
 
 
 

@@ -25,7 +25,7 @@ export class HomePage {
 
     private developer: boolean;
 
-    constructor(private nav: NavController, private auth: AuthService, private socket: SocketService) {
+    constructor(private nav: NavController, public auth: AuthService, public socket: SocketService) {
         this.chatPage = ChatPage;
         this.profilePage = ProfilePage;
         this.worklistPage = WorklistPage;
@@ -36,8 +36,7 @@ export class HomePage {
             this.socket.initialize();
 
             this.developer = this.auth.isFIRST();
-            this.loadAlerts();
-         
+            this.loadAlerts();  
         }
         this.worklistEpisodes = null;
     }

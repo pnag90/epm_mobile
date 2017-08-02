@@ -1,55 +1,86 @@
 import { Injectable } from '@angular/core';
-import { Episode } from '../models/epm-types';
-import * as moment from 'moment';
-import 'moment/locale/pt-br';
+import { Http } from '@angular/http';
+import { UtilService } from '../providers/utils-service';
+import { Episode } from '../providers/epm-types';
 
 @Injectable()
 export class ConfService {
-    
-    private EPM_URL: string;   
-    private EPM_SOCKET_URL: string; 
+
+    private EPM_URL: string;
+    private EPM_SOCKET_URL: string;
     private EPM_DEFAULT_USER_PIC: string;
 
-    constructor() {
+    private restHeaders;
+
+    constructor(public util: UtilService, public http: Http) {
         /*
             D:  http://192.168.19.112:8080/EPMJ2EE      http://192.168.20.71:3001
             P:  https://epm.first-global.com            https://epm.first-global.com:8886
         */
-        this.EPM_URL        = "http://192.168.19.112:8081";
-        this.EPM_SOCKET_URL = "http://192.168.20.71:3001";
-        
+        this.EPM_URL = "https://epm.first-global.com:8543";
+        this.EPM_SOCKET_URL = "https://epm.first-global.com:8886";
+
         this.EPM_DEFAULT_USER_PIC = "assets/img/avatar.png";
+
+        this.restHeaders = new Headers();
+        this.restHeaders.append('Content-Type', 'application/json');
+        this.restHeaders.append('Accept', 'application/json');
+        this.restHeaders.append('withCredentials', true);
     }
 
-    public defaultUserPhoto() : string{
+    public defaultUserPhoto(): string {
         return this.EPM_DEFAULT_USER_PIC;
     }
 
-    public mvc(){
-        return this.EPM_URL + "/app/rest"; // "/mvc";
+    public rest() {
+        return this.EPM_URL + '/epm/app/rest';
     }
-    
-    public socket(){
+
+    public socket() {
         return this.EPM_SOCKET_URL;
     }
 
+    public request(path: string, params: object = {}): Promise<any> {
+        return new Promise((resolve, reject) => {
+            try {
+                let postParams = JSON.stringify(params);
+                this.http.post(this.rest() + path, postParams, { headers: this.restHeaders }).subscribe(data => {
+                    let res = data.json();
+                    console.log(path, res);
+                    if (res && !res.isError && res.result) {
+                        resolve(res.result);
+                    } else {
+                        console.error(path, res);
+                        reject({ err: res });
+                    }
+                }, (err) => {
+                    console.error(path, err);
+                    reject({ err: err });
+                });
+            } catch (err) {
+                console.error(path, err);
+                reject({ err: err });
+            }
+        });
+    }
+
     // mapper
-    public getEpisodes(arr:any):any{
+    public getEpisodes(arr: any): any {
         let items: Array<Episode> = [];
-        if(arr !== null){
-            for(let a of arr){
+        if (arr !== null) {
+            for (let a of arr) {
                 items.push({
                     areaCode: a.areaCode,
                     areaFk: a.areaFk,
                     episodeFk: a.episodeFk,
                     episodeState: a.episodeState,
                     episodeStatus: a.episodeStatus,
-                    colorState: a.episodeState && a.episodeStatus ? this.getColor(a.episodeState,a.episodeStatus) : null,
+                    colorState: a.episodeState && a.episodeStatus ? this.getColor(a.episodeState, a.episodeStatus) : null,
                     insuranceDesc: a.insuranceDesc,
                     insuranceFk: a.insuranceFk,
                     observations: a.observations,
                     patientAge: a.patientAge,
-                    patientBirthDate: a.patientBirthdateUTC ? moment(a.patientBirthdateUTC).format("DD-MM-YYYY") : null,
+                    patientBirthDate: this.util.dateToStringDate(a.patientBirthdate),
                     patientFk: a.patientFk,
                     patientName: a.patientName,
                     patientPhoto: a.patientPhoto || null,
@@ -58,10 +89,10 @@ export class ConfService {
                     patientPhone: a.patientPhone,
                     patientProcessNum: a.patientProcessNum,
                     patientSex: a.patientSex,
-                    scheduledEndDate: a.scheduledEndDateUTC ?  moment(a.scheduledEndDateUTC).format("DD-MM-YYYY") : null,
-                    scheduledEndDateTime: a.scheduledEndDateUTC ?  moment(a.scheduledEndDateUTC).format("HH:mm") : null,
-                    scheduledStartDate: a.scheduledStartDateUTC ?  moment(a.scheduledStartDateUTC).format("DD-MM-YYYY") : null,
-                    scheduledStartDateTime: a.scheduledStartDateUTC ?  moment(a.scheduledStartDateUTC).format("HH:mm") : null,
+                    scheduledEndDate: this.util.dateToStringDate(a.scheduledEndDate),
+                    scheduledEndDateTime: this.util.dateToStringHour(a.scheduledEndDate),
+                    scheduledStartDate: this.util.dateToStringDate(a.scheduledStartDate),
+                    scheduledStartDateTime: this.util.dateToStringHour(a.scheduledStartDate),
                     serviceFk: a.serviceFk,
                     serviceName: a.serviceName,
                     teamFk: a.teamFk,
@@ -72,31 +103,31 @@ export class ConfService {
         return items;
     }
 
-    private getColor(state:string,status:string):string {
-        let stateColor:string = "";
-        if( state == 'A' || state == 'D' ){
-            stateColor   = 'app-state-ANU';
+    private getColor(state: string, status: string): string {
+        let stateColor: string = "";
+        if (state == 'A' || state == 'D') {
+            stateColor = 'app-state-ANU';
         }
-        else if(status == '0' || status == null){
-            stateColor   = '';
+        else if (status == '0' || status == null) {
+            stateColor = '';
         }
-        else if( state == 'M' || state == 'R' ){
+        else if (state == 'M' || state == 'R') {
             // CHEGOU
-            if(status == '1'){
-                stateColor   = 'app-state-CHE';
+            if (status == '1') {
+                stateColor = 'app-state-CHE';
             }
             // CHAMADO
-            else if(status == '2'){
-                stateColor   = 'app-state-CHA';
+            else if (status == '2') {
+                stateColor = 'app-state-CHA';
             }
             // SAIU
-            else if(status == '3'){
-                stateColor   = 'app-state-SAI';
+            else if (status == '3') {
+                stateColor = 'app-state-SAI';
             }
         }
         // FALTA
-        else if( state == 'F' ){
-            stateColor   = 'app-state-FAL';
+        else if (state == 'F') {
+            stateColor = 'app-state-FAL';
         }
         return stateColor;
     }

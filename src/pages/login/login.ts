@@ -12,7 +12,10 @@ export class LoginPage {
     loading: Loading;
     credentials = {username: '', password: '', institution: ''};
 
-    constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {}
+    constructor(private nav: NavController, 
+                public auth: AuthService, 
+                private alertCtrl: AlertController, 
+                private loadingCtrl: LoadingController) {}
 
     public login() {
         this.showLoading();

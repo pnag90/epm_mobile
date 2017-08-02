@@ -1,7 +1,7 @@
 import { ConfService } from '../../providers/conf-service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../providers/auth-service';
-import { User } from '../../models/epm-types';
+import { User } from '../../providers/epm-types';
 
 @Component({
     selector: 'page-profile',
@@ -18,6 +18,5 @@ export class ProfilePage implements OnInit{
     ngOnInit():void {
         this.user = this.auth.getUser();
     }
-
         
 }

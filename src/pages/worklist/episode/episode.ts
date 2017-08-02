@@ -1,7 +1,7 @@
 import { Http } from '@angular/http';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Episode } from '../../../models/epm-types';
+import { Episode } from '../../../providers/epm-types';
 import { ConfService } from '../../../providers/conf-service';
 
 @Component({
@@ -28,8 +28,8 @@ export class EpisodePage {
 
     getPatientHistory(patientId:string){
         this.loading = true;
-        let url:string = this.conf.mvc() + this.historyUrl + '/' + patientId + "?start=" + this.start + "&size=" + this.size;
-        this.http.get(url, { withCredentials: true }).map(res => res.json()).subscribe(
+        let url = this.historyUrl + '/' + patientId + "?start=" + this.start + "&size=" + this.size;
+        /*this.http.get(url, { withCredentials: true }).map(res => res.json()).subscribe(
             res => {
                 this.history = this.conf.getEpisodes(res.result.returnvalue || []);
                 this.loading = false;
@@ -39,7 +39,16 @@ export class EpisodePage {
                 this.history = [];
                 this.loading = false;
             }
-        ); 
+        ); */
+        this.conf.request(url).then(data => {
+            console.log(data);
+            this.history = this.conf.getEpisodes(data);
+            this.loading = false;
+        }, err => {
+            console.error(err);
+            this.history = [];
+            this.loading = false;
+        });
     }
 
     goBack() {

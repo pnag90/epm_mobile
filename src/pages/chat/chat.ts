@@ -4,7 +4,7 @@ import { NavController } from 'ionic-angular';
 import { ConfService } from '../../providers/conf-service';
 import { AuthService } from '../../providers/auth-service';
 import { SocketService } from '../../providers/socket-service';
-import { ChatUser } from '../../models/epm-types';
+import { ChatUser } from '../../providers/epm-types';
 import { MessagesPage } from './messages/messages';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/debounceTime';

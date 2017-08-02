@@ -3,7 +3,7 @@ import { FormControl, FormBuilder } from '@angular/forms';
 import { Content, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { AuthService } from '../../../providers/auth-service';
 import { SocketService } from '../../../providers/socket-service';
-import { User, ChatUser, ChatMessage } from '../../../models/epm-types';
+import { User, ChatUser, ChatMessage } from '../../../providers/epm-types';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({

@@ -1,15 +1,14 @@
 import { ConfService } from './conf-service';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { Storage } from '@ionic/storage';
+import { Storage  } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { User, ChatUser } from '../models/epm-types';
+import { User, ChatUser } from '../providers/epm-types';
 import { AuthService } from '../providers/auth-service';
+import { UtilService } from '../providers/utils-service';
 import 'rxjs/add/operator/map';
 import * as io from 'socket.io-client';
-import * as moment from 'moment';
-
 
 @Injectable()
 export class SocketService {
@@ -31,7 +30,11 @@ export class SocketService {
     private chatUsers = new BehaviorSubject([]); 
     private chatAlerts = new BehaviorSubject({}); 
 
-    constructor(private http: Http, private storage: Storage, private conf: ConfService, private auth: AuthService) {}
+    constructor(private http: Http, 
+                private storage: Storage, 
+                public conf: ConfService, 
+                public auth: AuthService,
+                public util: UtilService) {}
 
     public initialize() : void{
         this.socket = io.connect(this.conf.socket());
@@ -119,7 +122,7 @@ export class SocketService {
                 this.chatUsersArray = this.getChatUsersStatus(onlineUsers,val);
                 this.refreshUsers(); //resolve(true);
             }else{
-                this.http.get(this.conf.mvc() + '/hiscore/utils/users', { withCredentials: true }).map(res => res.json()).subscribe(
+                this.http.get(this.conf.rest() + '/hiscore/utils/users', { withCredentials: true }).map(res => res.json()).subscribe(
                     res => {
                         let result = res.result || [];
                         this.chatUsersArray = this.getChatUsersStatus(onlineUsers,result);
@@ -142,7 +145,7 @@ export class SocketService {
                 usersArr.push({
                     userId: users[i].userId,
                     userName: users[i].userName,
-                    state: this.isInArray(onlineUsers,users[i].userId) ? 'online' : 'offline',
+                    state: this.util.isInArray(onlineUsers,users[i].userId) ? 'online' : 'offline',
                     photo: users[i].photo,
                     canReceiveCall: users[i].canReceiveCall,
                     shortDescription: users[i].shortDescription
@@ -215,7 +218,7 @@ export class SocketService {
                 var lastTimeStamp   = this.chatMessagesData[userIdx][lastIndex].timestamp;
                 var lastUser        = this.chatMessagesData[userIdx][lastIndex].sender.userId;
 
-                if ( this.isSameTime(lastTimeStamp,newMsg.timestamp) && lastUser == senderId){
+                if ( this.util.isSameTime(lastTimeStamp,newMsg.timestamp) && lastUser == senderId){
                     this.chatMessagesData[userIdx][lastIndex].timestamp = newMsg.timestamp;
                     this.chatMessagesData[userIdx][lastIndex].messages  = this.chatMessagesData[userIdx][lastIndex].messages.concat(newMsg.messages);
                     this.chatMessagesData[userIdx][lastIndex].readed = isMine;
@@ -237,21 +240,6 @@ export class SocketService {
 
     public sendMessage(to:any, message:string):void{
         this.socket.emit(this.EVENT_MESSAGE_SEND, {to: to, message: message});
-    }
-    
-
-    /* aux */
-    private isInArray(arr,id) : boolean{
-        if(arr==null || arr.length==0){
-            return true;
-        }
-        var str_ = id + '';
-        var num_ = parseInt(id);
-        return arr.includes(str_) || arr.includes(num_);
-    }
-
-    public isSameTime(date1_,date2_) : boolean {
-        return moment(date1_).format('YYYYMMDD_HHmm') == moment(date2_).format('YYYYMMDD_HHmm');
     }
 
 }

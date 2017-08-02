@@ -1,48 +1,80 @@
 {
   "name": "epm_mobile",
-  "author": "Pedro Goncalves",
+  "author": "Pedro Goncalves <pnag90@gmail.com>",
   "version": "0.0.2",
   "homepage": "http://epm.first-global.com/m",
   "description": "A mobile application for ePM",
   "private": true,
   "main": "index.js",
-  "scripts": {
-    "clean": "ionic-app-scripts clean",
-    "build": "ionic-app-scripts build",
-    "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve"
-  },
-  "dependencies": {
-    "@angular/common": "2.2.1",
-    "@angular/compiler": "2.2.1",
-    "@angular/compiler-cli": "2.2.1",
-    "@angular/core": "2.2.1",
-    "@angular/forms": "2.2.1",
-    "@angular/http": "2.2.1",
-    "@angular/platform-browser": "2.2.1",
-    "@angular/platform-browser-dynamic": "2.2.1",
-    "@angular/platform-server": "2.2.1",
-    "@ionic/storage": "^1.1.7",
-    "ionic-angular": "2.0.1",
-    "ionic-native": "2.4.1",
-    "ionicons": "3.0.0",
-    "moment": "^2.17.1",
-    "ng2-translate": "^5.0.0",
-    "rxjs": "5.0.0-beta.12",
-    "socket.io-client": "^1.7.2",
-    "ts-md5": "^1.2.0",
-    "zone.js": "0.6.26"
-  },
-  "devDependencies": {
-    "@ionic/app-scripts": "1.1.0",
-    "sw-toolbox": "3.4.0",
-    "typescript": "2.0.9"
-  },
   "keywords": [
     "epm",
     "epm_clinics",
     "clinics",
     "first",
     "com"
-  ]
+  ],
+  "scripts": {
+    "clean": "ionic-app-scripts clean",
+    "build": "ionic-app-scripts build",
+    "ionic:build": "ionic-app-scripts build",
+    "ionic:serve": "ionic-app-scripts serve",
+    "increaseVersion": "cd scripts && node ./increaseVersion.js"
+  },
+  "dependencies": {
+    "@angular/common": "4.1.3",
+    "@angular/compiler": "4.1.3",
+    "@angular/compiler-cli": "4.1.3",
+    "@angular/core": "4.1.3",
+    "@angular/forms": "4.1.3",
+    "@angular/http": "4.1.3",
+    "@angular/platform-browser": "4.1.3",
+    "@angular/platform-browser-dynamic": "4.1.3",
+    "@angular/platform-server": "4.1.3",
+    "@ionic-native/browser-tab": "4.1.0",
+    "@ionic-native/core": "^4.1.0",
+    "@ionic-native/keyboard": "4.1.0",
+    "@ionic-native/local-notifications": "^4.1.0",
+    "@ionic-native/splash-screen": "4.1.0",
+    "@ionic-native/status-bar": "4.1.0",
+    "@ionic/storage": "2.0.1",
+    "@ngx-translate/core": "^7.1.0",
+    "@ngx-translate/http-loader": "0.1.0",
+    "ionic-angular": "3.6.0",
+    "ionic-plugin-keyboard": "^2.2.1",
+    "ionicons": "3.0.0",
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1",
+    "moment-timezone": "^0.5.13",
+    "rxjs": "5.4.0",
+    "socket.io-client": "^2.0.2",
+    "sw-toolbox": "3.6.0",
+    "ts-md5": "^1.2.0",
+    "zone.js": "0.8.12"
+  },
+  "devDependencies": {
+    "@ionic/app-scripts": "2.1.3",
+    "@ionic/cli-plugin-cordova": "1.5.0",
+    "@ionic/cli-plugin-ionic-angular": "1.4.0",
+    "@types/lodash": "^4.14.65",
+    "@types/moment-timezone": "^0.2.34",
+    "ionic": "3.6.0",
+    "typescript": "2.3.4"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-browsertab": {},
+      "cordova-plugin-console": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-wkwebview-engine": {},
+      "ionic-plugin-keyboard": {},
+      "de.appplant.cordova.plugin.local-notification": {}
+    },
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  }
 }
