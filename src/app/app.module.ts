@@ -7,6 +7,7 @@ import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 
 import { UtilService } from '../providers/utils-service';
 import { ConfService } from '../providers/conf-service';
@@ -72,6 +73,7 @@ export function createTranslateLoader(http: Http) {
     providers: [
         StatusBar,
         SplashScreen,
+        LocalNotifications,
         UtilService,
         ConfService,
         AuthService,

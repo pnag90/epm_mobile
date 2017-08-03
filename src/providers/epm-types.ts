@@ -10,6 +10,7 @@ export class User {
     entityCode: string;
     languageCode: string;
     photo: string;
+    options: Array<any>;
 
 
     constructor(userId:string, coworkerId:string, uname: string, fullname:string, email: string, entityId:string, entityCode:string, lang:string, pic:string) {
@@ -22,6 +23,7 @@ export class User {
         this.entityCode = entityCode;
         this.languageCode = lang;
         this.photo = pic;
+        this.options = [];
     }
 }
 

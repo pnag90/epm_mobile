@@ -8,10 +8,17 @@
   "HOUR": "Hora",
   "SERVICE": "Serviço",
   "EFR": "Efr",
+  "USER": "Efr",
+  "USER_OPTIONS": "Opções do Utilizador",
+  "NOTIFICATIONS": "Notificações",
+  "APPOINTMENTS": "Marcações",
+  "MESSAGES": "Mensagens",
+
   "BACK": "",
   "DONE": "Selecionar",
   "CANCEL": "Cancelar",
   "SEND": "Enviar",
+
   "OPTIONS": "Opções",
   "CHAT_NO_USERS": "Sem utilizadores"
 }

@@ -1,14 +1,14 @@
 import { ConfService } from './conf-service';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
 import { Storage  } from '@ionic/storage';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { User, ChatUser } from '../providers/epm-types';
 import { AuthService } from '../providers/auth-service';
 import { UtilService } from '../providers/utils-service';
 import 'rxjs/add/operator/map';
-import * as io from 'socket.io-client';
+import * as io from "socket.io-client";
 
 @Injectable()
 export class SocketService {
@@ -29,15 +29,18 @@ export class SocketService {
     private chatUsersArray = [];
     private chatUsers = new BehaviorSubject([]); 
     private chatAlerts = new BehaviorSubject({}); 
+    private notificationsActive:boolean = false;
+    private reconnectsMax:number = 0;
 
-    constructor(private http: Http, 
-                private storage: Storage, 
+    constructor(private storage: Storage, 
+                private localNotifications: LocalNotifications,
                 public conf: ConfService, 
                 public auth: AuthService,
                 public util: UtilService) {}
 
     public initialize() : void{
         this.socket = io.connect(this.conf.socket());
+        this.reconnectsMax = 30;
 
         this.storage.get('epmChatMessages').then((val) => {
             if(val !== undefined && val !== null){
@@ -58,10 +61,12 @@ export class SocketService {
         });
 
         this.socket.on("reconnect_error", (msg) => {
+            this.reconnectsMax--;
             console.log('on reconnect_error');
         });
 
         this.socket.on("reconnect_failed", (msg) => {
+            this.reconnectsMax--;
             console.log('on reconnect_failed');
         });
 
@@ -71,8 +76,8 @@ export class SocketService {
             }
         });*/
 
-        this.socket.on('disconnect', function () {
-            console.log('user disconnected');
+        this.socket.on('disconnect', function (e) {
+            console.log('user disconnected',e);
         });
 
         this.socket.on("epm:chat:presence", (data) => {
@@ -87,7 +92,16 @@ export class SocketService {
             //console.log("setAuthentication", this.session);
             this.socket.emit('authenticate', this.session);
 
-             this.socket.on(this.EVENT_MESSAGE_RECEIVED + ':' + this.session.userId, (newMsg) => {
+            if(this.session && this.session.options){
+                for(let i=0; i<this.session.options.length; i++){
+                    if(this.session.options[i].code=='OPT_NOTIF_MSG'){
+                        this.notificationsActive=this.session.options[i].value>0; 
+                        break;
+                    }
+                }
+            }
+
+            this.socket.on(this.EVENT_MESSAGE_RECEIVED + ':' + this.session.userId, (newMsg) => {
                 console.log('epmChatService: new message',newMsg);
                 this.newChatMessage(newMsg,false);
             });
@@ -122,7 +136,16 @@ export class SocketService {
                 this.chatUsersArray = this.getChatUsersStatus(onlineUsers,val);
                 this.refreshUsers(); //resolve(true);
             }else{
-                this.http.get(this.conf.rest() + '/hiscore/utils/users', { withCredentials: true }).map(res => res.json()).subscribe(
+                this.conf.request('/hiscore/utils/users').then(res => {
+                    console.log(res);
+                    let result = res.result || [];
+                    this.chatUsersArray = this.getChatUsersStatus(onlineUsers,result);
+                    this.refreshUsers(); 
+                }, err => {
+                    console.error(err);
+                    this.chatUsers.error(err);
+                });
+    /*          this.http.get(this.conf.rest() + '/hiscore/utils/users', { withCredentials: true }).map(res => res.json()).subscribe(
                     res => {
                         let result = res.result || [];
                         this.chatUsersArray = this.getChatUsersStatus(onlineUsers,result);
@@ -132,7 +155,7 @@ export class SocketService {
                         console.error(err);
                         this.chatUsers.error(err);
                     }
-                ); 
+                ); */
             }
         });
     }
@@ -194,6 +217,15 @@ export class SocketService {
         }
     }
 
+    private notify():void{
+        if( this.notificationsActive==true ){
+            this.localNotifications.schedule({
+                text: 'Recebeu uma nova mensagem',
+                at: new Date(new Date().getTime() + 500)
+            });
+        }
+    }
+
     public getAlerts(): Observable<any> {
         return this.chatAlerts.asObservable();
     }
@@ -234,6 +266,9 @@ export class SocketService {
 
             this.storage.set('epmChatMessages',this.chatMessagesData);
             this.chatMessages.next(this.chatMessagesData);
+            if(!isMine){
+                this.notify();
+            }
             this.updateAlerts();
         }
     }

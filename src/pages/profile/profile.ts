@@ -11,7 +11,7 @@ export class ProfilePage implements OnInit{
     public user: User;
     private defaultPic: string;
 
-    constructor(private auth: AuthService, private conf:ConfService) {
+    constructor(public auth: AuthService, public conf:ConfService) {
         this.defaultPic = this.conf.defaultUserPhoto();
     }
 
