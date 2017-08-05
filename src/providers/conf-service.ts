@@ -64,6 +64,28 @@ export class ConfService {
         });
     }
 
+    public get(path: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            try {
+                this.http.get(this.rest() + path, {headers: this.restHeaders}).map(res => res.json()).subscribe(res => {
+                    console.log(path, res);
+                    if (res && !res.isError && res.result) {
+                        resolve(res.result);
+                    } else {
+                        console.error(path, res);
+                        reject({ err: res });
+                    }
+                }, (err) => {
+                    console.error(path, err);
+                    reject({ err: err });
+                });                    
+            } catch (err) {
+                console.error(path, err);
+                reject({ err: err });
+            }
+        });
+    }
+
     // mapper
     public getEpisodes(arr: any): any {
         let items: Array<Episode> = [];

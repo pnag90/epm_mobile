@@ -39,7 +39,7 @@ export class SocketService {
                 public util: UtilService) {}
 
     public initialize() : void{
-        this.socket = io.connect(this.conf.socket());
+        this.socket = io.connect(this.conf.socket(), {'transports': ['websocket', 'polling', 'flashsocket']});
         this.reconnectsMax = 30;
 
         this.storage.get('epmChatMessages').then((val) => {
@@ -136,7 +136,7 @@ export class SocketService {
                 this.chatUsersArray = this.getChatUsersStatus(onlineUsers,val);
                 this.refreshUsers(); //resolve(true);
             }else{
-                this.conf.request('/hiscore/utils/users').then(res => {
+                this.conf.get('/hiscore/utils/users').then(res => {
                     console.log(res);
                     let result = res.result || [];
                     this.chatUsersArray = this.getChatUsersStatus(onlineUsers,result);
