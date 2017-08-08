@@ -1,10 +1,11 @@
-import { ConfService } from './conf-service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Http } from '@angular/http';
+//import { HttpService } from '@angular/http';
 import { Storage  } from '@ionic/storage';
 import { Md5 } from 'ts-md5/dist/md5';
-import { User } from '../providers/epm-types';
+import { HttpService } from './http-service';
+import { ConfService } from './conf-service';
+import { User } from './epm-types';
 import 'rxjs/add/operator/map';
 
 
@@ -12,8 +13,9 @@ import 'rxjs/add/operator/map';
 export class AuthService {
     private currentUser: User;
     private requestUrl: string;
+    private sessionAlias;
 
-    constructor(private http: Http, private storage: Storage, private conf:ConfService) {
+    constructor(private http: HttpService, private storage: Storage, private conf:ConfService) {
         this.requestUrl = conf.rest();
     }
 
@@ -39,10 +41,14 @@ export class AuthService {
     }
 
     private setCredentials(credentials:any):void{
+        //sessionStorage.setItem(fSessionService.getSessionAlias() + ':userMenuExtraOptions', JSON.stringify(_userMenuExtraOptions));
         this.storage.set('epmUserCredentials', credentials).then(
-        () => console.log('Stored item!'),
-    error => console.error('Error storing item', error)
-  );
+            function()  {
+                console.log('User credentials stored!')
+            },
+            function(error){
+                console.error('Error storing item', error)
+            });
     }
 
     public hasPreviousAuthorization() {
@@ -60,7 +66,7 @@ export class AuthService {
                     });
                 }
                 else{
-                   resolve(false);
+                    resolve(false);
                 }
             });
         });
@@ -70,20 +76,25 @@ export class AuthService {
         return this.currentUser!==null;
     }
 
-    public login(credentials): any {
-        console.log("login",credentials);
+    public login(credentials, cached:boolean=false): any {
         if (credentials.username === null || credentials.password === null || credentials.institution === null) {
             return {isError: true, error: "Credênciais inválidas"};
         } else {
-            return this.authenticate(credentials.username,credentials.password,credentials.institution).then(
+            let cred = JSON.parse(JSON.stringify(credentials))
+            if(!cached){
+                cred.password = Md5.hashStr(cred.password);
+            }
+            return this.authenticate(cred.username,cred.password,cred.institution).then(
                 (data) => {
                     console.log("authenticate",data);
                     let error = "Acesso negado. Verifique os seus dados de acesso.";
                     if (data) {
                         let info = data["authenticationInfo"];
+                        //fSecurityService.setAuthenticated(true);
+                        //sessionStorage.setItem('authenticated', 'true');
                         if ( info && (info.appCustomInfo) && (info.appCustomInfo.session) ) {
                             this.setUser(info);
-                            this.setCredentials(credentials);
+                            this.setCredentials(cred);
                             return {isError: false, error: null};
                         } else {
                             return {isError: true, error: error};
@@ -102,15 +113,16 @@ export class AuthService {
     private authenticate(username,password,institution) {
 
         let authUrl     = this.requestUrl + "/security/fdfAuthenticate";
-        let authBody    = `?username=${username}&password=${Md5.hashStr(password)}&appId=181&institutionCode=${institution}`;
+        let authBody    = `?username=${username}&password=${password}&appId=181&institutionCode=${institution}`;
         let accountPath = this.requestUrl + "/fdf/security/account";
 
         return new Promise((resolve, reject) => {
-            this.http.post(authUrl + authBody, null, { withCredentials: true }).subscribe(
+            this.http.post(authUrl + authBody, '').then(
                 success => {
-                    this.http.get(accountPath, { withCredentials: true }).map(res => res.json()).subscribe(
+                    console.log("authOK",authUrl);
+                    this.http.get(accountPath).then(
                         data => {
-                            //console.log(accountPath,data);
+                            console.log(accountPath,data);
                             resolve(data);
                         },
                         err => {
@@ -118,18 +130,18 @@ export class AuthService {
                                 console.error('Invalid user credentials');
                                 reject('Credênciais inválidas.');
                             } else if (err.status !== 200) {
-                                console.error('HTTP Error');
+                                console.error('HTTP Error',err);
                                 reject('Falha no pedido.');
                             }
                         }
-                    ); 
+                    );
                 },
                 error => {
                     if (error.status === 401) {
                         console.error('Invalid user credentials');
                         reject('Credênciais inválidas.');
                     } else if (error.status !== 200) {
-                        console.error('HTTP Error');
+                        console.error('HTTP Error',error);
                         reject('Falha no pedido.');
                     }
                 }
@@ -143,13 +155,14 @@ export class AuthService {
         return Observable.create(observer => {
             this.currentUser = null;
             this.storage.clear();
-            window.localStorage.clear();      
+            window.localStorage.clear();
             observer.next(true);
             observer.complete();
         });
     }
 
-    public isFIRST() :boolean {
+    public isFIRST():boolean {
         return this.currentUser.entityCode.toLocaleLowerCase() == 'first' ;
     }
+
 }

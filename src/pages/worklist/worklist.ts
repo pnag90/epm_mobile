@@ -74,7 +74,7 @@ export class WorklistPage implements OnInit {
             });*/
             this.conf.request(url).then(data => {
                 console.log(data);
-                this.episodes = this.conf.getEpisodes(data.result || []);
+                this.episodes = this.conf.getEpisodes(data.RETURN || []);
                 this.totalEpisodes = this.episodes.length || 0;
                 this.worklistDate = this.currentDate;
                 this.loading = false;

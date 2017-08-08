@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import { UtilService } from '../providers/utils-service';
-import { Episode } from '../providers/epm-types';
+import { HttpService } from './http-service'; // import { Http } from '@angular/http';
+import { UtilService } from './utils-service';
+import { Episode } from './epm-types';
 
 @Injectable()
 export class ConfService {
@@ -10,22 +10,11 @@ export class ConfService {
     private EPM_SOCKET_URL: string;
     private EPM_DEFAULT_USER_PIC: string;
 
-    private restHeaders;
-
-    constructor(public util: UtilService, public http: Http) {
-        /*
-            D:  http://192.168.19.112:8080/EPMJ2EE      http://192.168.20.71:3001
-            P:  https://epm.first-global.com            https://epm.first-global.com:8886
-        */
-        this.EPM_URL = "https://epm.first-global.com:8543";
-        this.EPM_SOCKET_URL = "https://epm.first-global.com:8886";
+    constructor(public util: UtilService, public http: HttpService) {
+        this.EPM_URL = http.epmUrl();
+        this.EPM_SOCKET_URL = http.socketUrl();
 
         this.EPM_DEFAULT_USER_PIC = "assets/img/avatar.png";
-
-        this.restHeaders = new Headers();
-        this.restHeaders.append('Content-Type', 'application/json');
-        this.restHeaders.append('Accept', 'application/json');
-        this.restHeaders.append('withCredentials', true);
     }
 
     public defaultUserPhoto(): string {
@@ -33,7 +22,7 @@ export class ConfService {
     }
 
     public rest() {
-        return this.EPM_URL + '/epm/app/rest';
+        return this.EPM_URL + 'app/rest';
     }
 
     public socket() {
@@ -44,11 +33,10 @@ export class ConfService {
         return new Promise((resolve, reject) => {
             try {
                 let postParams = JSON.stringify(params);
-                this.http.post(this.rest() + path, postParams, { headers: this.restHeaders }).subscribe(data => {
-                    let res = data.json();
+                this.http.post(this.rest() + path, postParams).then(res => {
                     console.log(path, res);
-                    if (res && !res.isError && res.result) {
-                        resolve(res.result);
+                    if (res && !res['isError'] && res['result']) {
+                        resolve(res['result']);
                     } else {
                         console.error(path, res);
                         reject({ err: res });
@@ -67,10 +55,10 @@ export class ConfService {
     public get(path: string): Promise<any> {
         return new Promise((resolve, reject) => {
             try {
-                this.http.get(this.rest() + path, {headers: this.restHeaders}).map(res => res.json()).subscribe(res => {
+                this.http.get(this.rest() + path).then(function(res){
                     console.log(path, res);
-                    if (res && !res.isError && res.result) {
-                        resolve(res.result);
+                    if (res && !res['isError'] && res['result']) {
+                        resolve(res['result']);
                     } else {
                         console.error(path, res);
                         reject({ err: res });
@@ -153,6 +141,8 @@ export class ConfService {
         }
         return stateColor;
     }
+
+    
 
 
 }

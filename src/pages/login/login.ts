@@ -17,7 +17,7 @@ export class LoginPage {
                 private alertCtrl: AlertController, 
                 private loadingCtrl: LoadingController) {}
 
-    public login() {
+    login() {
         this.showLoading();
         this.auth.login(this.credentials).then((data) => {
             if (data.isError) {

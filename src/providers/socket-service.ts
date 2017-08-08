@@ -138,8 +138,7 @@ export class SocketService {
             }else{
                 this.conf.get('/hiscore/utils/users').then(res => {
                     console.log(res);
-                    let result = res.result || [];
-                    this.chatUsersArray = this.getChatUsersStatus(onlineUsers,result);
+                    this.chatUsersArray = this.getChatUsersStatus(onlineUsers, res || []);
                     this.refreshUsers(); 
                 }, err => {
                     console.error(err);

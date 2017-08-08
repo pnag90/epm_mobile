@@ -42,7 +42,7 @@ export class EpisodePage {
         ); */
         this.conf.request(url).then(data => {
             console.log(data);
-            this.history = this.conf.getEpisodes(data);
+            this.history = this.conf.getEpisodes(data.RETURN || []);
             this.loading = false;
         }, err => {
             console.error(err);

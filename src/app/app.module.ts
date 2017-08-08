@@ -1,6 +1,7 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule, Http } from '@angular/http';
+import { HttpModule, Http, RequestOptions, XHRBackend } from '@angular/http';
+//import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
@@ -9,6 +10,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 
+import { HttpService } from '../providers/http-service';
 import { UtilService } from '../providers/utils-service';
 import { ConfService } from '../providers/conf-service';
 import { AuthService } from '../providers/auth-service';
@@ -75,8 +77,18 @@ export function createTranslateLoader(http: Http) {
         SplashScreen,
         LocalNotifications,
         UtilService,
+        HttpService,
         ConfService,
         AuthService,
+        
+        /*
+        {
+            provide: HttpService,
+            useFactory: (backend: XHRBackend, options: RequestOptions) => {
+                return new Http(backend, options);
+            },
+            deps: [XHRBackend, RequestOptions]
+        },*/
         SocketService,
         {provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
