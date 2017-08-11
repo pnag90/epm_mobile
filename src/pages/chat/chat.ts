@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { NavController } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { ConfService } from '../../providers/conf-service';
 import { AuthService } from '../../providers/auth-service';
 import { SocketService } from '../../providers/socket-service';
@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 
+@IonicPage()
 @Component({
     selector: 'page-chat',
     templateUrl: 'chat.html'

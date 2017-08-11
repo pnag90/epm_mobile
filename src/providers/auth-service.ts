@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-//import { HttpService } from '@angular/http';
 import { Storage  } from '@ionic/storage';
 import { Md5 } from 'ts-md5/dist/md5';
 import { HttpService } from './http-service';

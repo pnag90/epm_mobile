@@ -1,11 +1,12 @@
 import { Component, ViewChild, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FormControl, FormBuilder } from '@angular/forms';
-import { Content, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, Content, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { AuthService } from '../../../providers/auth-service';
 import { SocketService } from '../../../providers/socket-service';
 import { User, ChatUser, ChatMessage } from '../../../providers/epm-types';
 import { Subscription } from 'rxjs/Subscription';
 
+@IonicPage()
 @Component({
   selector: 'page-messages',
   templateUrl: 'messages.html'

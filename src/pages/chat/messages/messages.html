@@ -10,10 +10,28 @@
   <div #chatbox class="chat-box" *ngIf="userMessages">
     <div *ngFor="let message of userMessages" class="message-wrapper">
       <div *ngIf="message && user.userId != message.sender.userId">
-        <message-component [msgSide]="'left'" [message]="message"></message-component>
+        <!--<message-component [msgSide]="'left'" [message]="message"></message-component>-->
+          <img [src]="message.sender.photo || placeholder" class="profile-pic left" *ngIf="message"/>
+          <div class="chat-bubble left slide-left" *ngIf="message">
+            <div class="message" *ngFor="let msg of message.messages" autolinker>
+              <p [innerHTML]="msg"></p>
+            </div>
+          </div>    
+          <div class="message-detail left">
+            <span class="timestamp">{{message.timestamp | moment:'HH:mm' | lowercase}}</span>
+          </div> 
       </div>
       <div *ngIf="message && user.userId === message.sender.userId">
-        <message-component [msgSide]="'right'" [message]="message"></message-component>
+        <!--<message-component [msgSide]="'right'" [message]="message"></message-component>-->
+        <img [src]="message.sender.photo || placeholder" class="profile-pic right" *ngIf="message"/>
+        <div class="chat-bubble right slide-right" *ngIf="message">
+          <div class="message" *ngFor="let msg of message.messages" autolinker>
+            <p [innerHTML]="msg"></p>
+          </div>
+        </div>    
+        <div class="message-detail right">
+          <span class="timestamp">{{message.timestamp | moment:'HH:mm' | lowercase}}</span>
+        </div> 
       </div>
       <div class="cf"></div>
     </div>
