@@ -20,6 +20,7 @@ export class HttpService {
         this.EPM_URL = "https://epm.first-global.com:8543/epm/";
         this.EPM_SOCKET_URL = "https://epm.first-global.com:8886";
         this.requestHeader = new Headers();
+        this.requestHeader.append('Accept', 'application/json');
         this.requestHeader.append('Content-Type', 'application/json');
     }
 
