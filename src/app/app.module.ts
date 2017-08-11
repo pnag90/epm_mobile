@@ -1,14 +1,10 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule, Http, RequestOptions, XHRBackend } from '@angular/http';
-//import { HttpClientModule } from '@angular/common/http';
-import { IonicStorageModule } from '@ionic/storage';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { LocalNotifications } from '@ionic-native/local-notifications';
+import { IonicStorageModule } from '@ionic/storage';
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
 import { HttpService } from '../providers/http-service';
 import { UtilService } from '../providers/utils-service';
@@ -17,16 +13,11 @@ import { AuthService } from '../providers/auth-service';
 import { SocketService } from '../providers/socket-service';
 import { MomentPipe } from '../pipes/moment.pipe';
 import { SafePipe } from '../pipes/safe.pipe';
-import { MessageComponent } from '../pages/chat/messages/message-component';
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
-import { LoginPage } from '../pages/login/login';
-import { ProfilePage } from '../pages/profile/profile';
-import { EpisodePage } from '../pages/worklist/episode/episode';
-import { WorklistPage } from '../pages/worklist/worklist';
-import { OptionsPage } from '../pages/options/options';
-import { ChatPage } from '../pages/chat/chat';
-import { MessagesPage } from '../pages/chat/messages/messages';
+
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 
 export function createTranslateLoader(http: Http) {
     return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -36,16 +27,7 @@ export function createTranslateLoader(http: Http) {
     declarations: [
         MomentPipe,
         SafePipe,
-        MyApp,
-        HomePage,
-        LoginPage,
-        ProfilePage,
-        WorklistPage,
-        EpisodePage,
-        OptionsPage,
-        ChatPage,
-        MessagesPage,
-        MessageComponent
+        MyApp
     ],
     imports: [
         BrowserModule,
@@ -62,15 +44,7 @@ export function createTranslateLoader(http: Http) {
     ],
     bootstrap: [IonicApp],
     entryComponents: [
-        MyApp,
-        HomePage,
-        LoginPage,
-        ProfilePage,
-        WorklistPage,
-        EpisodePage,
-        OptionsPage,
-        ChatPage,
-        MessagesPage
+        MyApp
     ],
     providers: [
         StatusBar,
@@ -80,15 +54,6 @@ export function createTranslateLoader(http: Http) {
         HttpService,
         ConfService,
         AuthService,
-        
-        /*
-        {
-            provide: HttpService,
-            useFactory: (backend: XHRBackend, options: RequestOptions) => {
-                return new Http(backend, options);
-            },
-            deps: [XHRBackend, RequestOptions]
-        },*/
         SocketService,
         {provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

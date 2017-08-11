@@ -2,7 +2,9 @@ import { ConfService } from '../../providers/conf-service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../providers/auth-service';
 import { User } from '../../providers/epm-types';
+import { IonicPage } from 'ionic-angular';
 
+@IonicPage()
 @Component({
     selector: 'page-profile',
     templateUrl: 'profile.html'

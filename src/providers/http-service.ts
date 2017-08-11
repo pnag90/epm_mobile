@@ -7,6 +7,7 @@ import { ConfService } from './conf-service';
 @Injectable()
 export class HttpService {
 
+    private requestHeader: Headers;
     private sessionAlias;
     private EPM_URL: string;
     private EPM_SOCKET_URL: string;
@@ -18,14 +19,8 @@ export class HttpService {
     constructor(public http: Http, private storage: Storage) {
         this.EPM_URL = "https://epm.first-global.com:8543/epm/";
         this.EPM_SOCKET_URL = "https://epm.first-global.com:8886";
-    }
-
-    buildHeaders(auth:boolean=false): Headers {
-        let headers = new Headers();
-        //here there is some logic to build custom headers for my app
-        //let credentials = this.getAuthorizationHeader();
-        headers.append('Content-Type', 'application/json');
-        return headers;
+        this.requestHeader = new Headers();
+        this.requestHeader.append('Content-Type', 'application/json');
     }
 
     buildUrl(url: string) {
@@ -67,7 +62,7 @@ export class HttpService {
 
     get(url: string) {
         let http_ = this.http;
-        let header_ = this.buildHeaders(false);
+        let header_ = this.requestHeader;
         return new Promise((resolve, reject) => {
             this.buildUrl(url).then((requestUrl: string) => {
                 http_.get(requestUrl, { headers: header_, withCredentials: true }).map(this.extractData).subscribe(
@@ -84,8 +79,8 @@ export class HttpService {
 
     post(url: string, data) {
         let http_ = this.http;
-        let auth_ = url.indexOf('security/fdfAuthenticate') > 0;
-        let header_ = this.buildHeaders(auth_);
+        //let auth_ = url.indexOf('security/fdfAuthenticate') > 0;
+        let header_ = this.requestHeader;
         return new Promise((resolve, reject) => {
             this.buildUrl(url).then((requestUrl: string) => {
                 http_.post(requestUrl, data, { headers: header_, withCredentials: true }).map(this.extractData).subscribe(

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController, Loading } from 'ionic-angular';
+import { IonicPage, NavController, AlertController, LoadingController, Loading } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
-import { HomePage } from '../home/home';
 
+@IonicPage()
 @Component({
     selector: 'page-login',
     templateUrl: 'login.html'
@@ -25,7 +25,7 @@ export class LoginPage {
             } else {
                 setTimeout(() => {
                     this.loading.dismiss();
-                    this.nav.setRoot(HomePage)
+                    this.nav.setRoot('HomePage');
                 });
             }
         });

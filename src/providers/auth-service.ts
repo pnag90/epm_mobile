@@ -54,9 +54,9 @@ export class AuthService {
     public hasPreviousAuthorization() {
         return new Promise(resolve => {
             this.storage.get('epmUserCredentials').then((val) => {
-                //console.log("epmUserCredentials",val);
+                console.log("epmUserCredentials",val);
                 if(val !== undefined && val !== null){
-                    this.login(val).then((data) => {
+                    this.login(val, true).then((data) => {
                         if (data.isError) {
                             console.error(data.error);
                             resolve(false);

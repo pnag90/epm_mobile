@@ -1,37 +1,27 @@
-import { OptionsPage } from '../options/options';
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { SocketService } from '../../providers/socket-service';
-import { LoginPage } from '../login/login';
-import { ChatPage } from '../chat/chat';
-import { WorklistPage } from '../worklist/worklist';
-import { ProfilePage } from '../profile/profile';
 import { Subscription } from 'rxjs/Subscription';
 
+@IonicPage()
 @Component({
     selector: 'page-home',
     templateUrl: 'home.html'
 })
 export class HomePage {
     private subscription: Subscription;
-    private chatPage: any;
-    private profilePage: any;
-    private worklistPage: any;
-    private optionsPage: any;
+    private chatPage: any = 'ChatPage';
+    private profilePage: any = 'ProfilePage';
+    private worklistPage: any = 'WorklistPage';
+    private optionsPage: any = 'OptionsPage';
 
     private chatAlerts: string;
     private worklistEpisodes: string;
 
-    private developer: boolean;
+    private developer: boolean = false;
 
     constructor(private nav: NavController, public auth: AuthService, public socket: SocketService) {
-        this.chatPage = ChatPage;
-        this.profilePage = ProfilePage;
-        this.worklistPage = WorklistPage;
-        this.optionsPage = OptionsPage;
-        this.developer = false;
-
         if(this.auth.isLogged()){
             this.socket.initialize();
 
@@ -61,7 +51,7 @@ export class HomePage {
     public logout() {
         this.auth.logout().subscribe(res => {
             this.socket.disconnect();
-            this.nav.setRoot(LoginPage)
+            this.nav.setRoot('LoginPage');
         });
     }
 

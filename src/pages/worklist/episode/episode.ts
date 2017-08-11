@@ -1,9 +1,9 @@
-import { Http } from '@angular/http';
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Episode } from '../../../providers/epm-types';
 import { ConfService } from '../../../providers/conf-service';
 
+@IonicPage()
 @Component({
     selector: 'page-episode',
     templateUrl: 'episode.html'
@@ -16,9 +16,8 @@ export class EpisodePage {
     private start: string = "0";
     private size: string = "12";
     private loading: boolean;
-    private historyUrl: string = '/hiscore/mobilebiz/patienthistory';
 
-    constructor(private navCtrl: NavController, public params: NavParams, private conf:ConfService, private http:Http) {
+    constructor(private navCtrl: NavController, public params: NavParams, private conf:ConfService) {
         this.loading = false;
         this.segment = 'episode';
         this.episode = this.params.get('episode');
@@ -28,18 +27,7 @@ export class EpisodePage {
 
     getPatientHistory(patientId:string){
         this.loading = true;
-        let url = this.historyUrl + '/' + patientId + "?start=" + this.start + "&size=" + this.size;
-        /*this.http.get(url, { withCredentials: true }).map(res => res.json()).subscribe(
-            res => {
-                this.history = this.conf.getEpisodes(res.result.returnvalue || []);
-                this.loading = false;
-            },
-            err => {
-                console.error(err);
-                this.history = [];
-                this.loading = false;
-            }
-        ); */
+        let url = '/hiscore/mobilebiz/patienthistory/' + patientId + "?start=" + this.start + "&size=" + this.size;
         this.conf.request(url).then(data => {
             console.log(data);
             this.history = this.conf.getEpisodes(data.RETURN || []);
