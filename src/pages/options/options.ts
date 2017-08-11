@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { User } from '../../providers/epm-types';
 
+@IonicPage()
 @Component({
     selector: 'page-options',
     templateUrl: 'options.html'

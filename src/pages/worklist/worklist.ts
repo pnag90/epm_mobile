@@ -1,12 +1,12 @@
-import { NavController } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { EpisodePage } from './episode/episode';
 import { UtilService } from '../../providers/utils-service';
 import { ConfService } from '../../providers/conf-service';
 import { AuthService } from '../../providers/auth-service';
 import { User, Episode } from '../../providers/epm-types';
 
+@IonicPage()
 @Component({
     selector: 'page-worklist',
     templateUrl: 'worklist.html'
@@ -15,7 +15,6 @@ export class WorklistPage implements OnInit {
     private user: User;
     private episodes: any;
     private totalEpisodes: number;
-    private worklistUrl: string = '/hiscore/mobilebiz/worklist';
     private defaultPic: string;
     private loading: boolean;
 
@@ -55,23 +54,11 @@ export class WorklistPage implements OnInit {
     getWorklist(): void {
         if (this.currentDate !== null) {
             this.loading = true;
-            let url: string = this.worklistUrl + '?d=' + this.util.dateToString(this.currentDate,"DDMMYYYY");
+            let url: string = '/hiscore/mobilebiz/worklist?d=' + this.util.dateToString(this.currentDate,"DDMMYYYY");
             if (this.searchTxt != null && this.searchTxt.length > 1) {
                 this.searchKey = this.searchTxt;
                 url = url + '&s=' + this.searchKey;
             }
-            /*this.http.get(url, { withCredentials: true }).map(res => res.json()).subscribe(res => {
-                if(res && !res.isError && res.result){
-                    this.episodes = this.conf.getEpisodes(res.result.returnvalue || []);
-                    this.totalEpisodes = this.episodes.length || 0;
-                    this.worklistDate = this.currentDate;
-                    console.log(this.episodes);
-                    this.loading = false;
-                } else  {
-                    console.error("erro pedido episodios");
-                    this.loading = false;
-                }                
-            });*/
             this.conf.request(url).then(data => {
                 console.log(data);
                 this.episodes = this.conf.getEpisodes(data.RETURN || []);
@@ -86,9 +73,8 @@ export class WorklistPage implements OnInit {
 
     openEpisode(episode: Episode) {
         if (episode) {
-            this.navCtrl.push(EpisodePage, { episode: episode });
+            this.navCtrl.push('EpisodePage', { episode: episode });
         }
     }
-
 
 }

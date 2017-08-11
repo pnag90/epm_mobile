@@ -1,12 +1,12 @@
-import { ConfService } from './conf-service';
 import { Injectable } from '@angular/core';
 import { Storage  } from '@ionic/storage';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { User, ChatUser } from '../providers/epm-types';
-import { AuthService } from '../providers/auth-service';
-import { UtilService } from '../providers/utils-service';
+import { User, ChatUser } from './epm-types';
+import { AuthService } from './auth-service';
+import { UtilService } from './utils-service';
+import { ConfService } from './conf-service';
 import 'rxjs/add/operator/map';
 import * as io from "socket.io-client";
 
@@ -144,17 +144,6 @@ export class SocketService {
                     console.error(err);
                     this.chatUsers.error(err);
                 });
-    /*          this.http.get(this.conf.rest() + '/hiscore/utils/users', { withCredentials: true }).map(res => res.json()).subscribe(
-                    res => {
-                        let result = res.result || [];
-                        this.chatUsersArray = this.getChatUsersStatus(onlineUsers,result);
-                        this.refreshUsers(); 
-                    },
-                    err => {
-                        console.error(err);
-                        this.chatUsers.error(err);
-                    }
-                ); */
             }
         });
     }
