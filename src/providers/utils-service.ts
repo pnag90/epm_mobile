@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { ToastController } from 'ionic-angular';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 import * as _ from 'lodash';
 import moment from 'moment';
 import 'moment-timezone';
@@ -9,7 +10,7 @@ import 'moment/locale/pt-br';
 export class UtilService {
     tabChangeEvent;
 
-    constructor(public toastCtrl: ToastController) {
+    constructor(public toastCtrl: ToastController, private localNotifications: LocalNotifications) {
         this.tabChangeEvent = new EventEmitter<string>();
     }
 
@@ -62,6 +63,31 @@ export class UtilService {
             duration: duration || 3000
         });
         toast.present();
+    }
+
+    showNotification(title:string, message:string) {
+        /*let notification = {
+            id: day.dayCode,
+            title: title,
+            text: message,
+            at: firstNotificationTime,
+            every: 'week'
+        };
+
+        this.notifications.push(notification);*/
+        console.log('localNotifications.schedule:' + new Date(new Date().getTime() + 500),title,message);
+        let notification = {
+            id: 999,
+            title: title,
+            text: message,
+            at: new Date(new Date().getTime() + 500),
+            every: '0'
+        };
+        this.localNotifications.schedule([notification]);
+    }
+
+    cancelNotifications() {
+        this.localNotifications.cancelAll();
     }
 
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Config, Platform } from 'ionic-angular';
+import { BackgroundMode } from '@ionic-native/background-mode';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { TranslateService } from '@ngx-translate/core';
@@ -14,9 +15,10 @@ export class MyApp {
     constructor(platform: Platform,
                 statusBar: StatusBar, 
                 splashScreen: SplashScreen,
+                private backgroundMode: BackgroundMode,
                 private translate: TranslateService,
                 private auth: AuthService,
-                private config: Config,) {
+                private config: Config) {
         platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
@@ -40,6 +42,7 @@ export class MyApp {
             this.initializeApp();
             this.checkPreviousAuthorization();
         });
+        this.backgroundMode.enable();
     }
 
     initializeApp() {

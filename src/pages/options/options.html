@@ -6,18 +6,27 @@
 
     <br><br>
 
-    <ion-list-header>{{ 'NOTIFICATIONS' | translate }}</ion-list-header>
+    <ion-list-header *ngIf="developer">{{ 'NOTIFICATIONS' | translate }}</ion-list-header>
 
-    <ion-item>
+    <ion-item *ngIf="developer">
         <ion-label>{{ 'APPOINTMENTS' | translate }}</ion-label>
         <ion-toggle [(ngModel)]="opt_notifAppointments" 
                     (ionChange)="updateOption('A',opt_notifAppointments)">
         </ion-toggle>
     </ion-item>
-    <ion-item>
+    <ion-item *ngIf="developer">
         <ion-label>{{ 'MESSAGES' | translate }}</ion-label>
         <ion-toggle [(ngModel)]="opt_notifMessages"
                     (ionChange)="updateOption('M',opt_notifMessages)">
+        </ion-toggle>
+    </ion-item>
+
+    <br *ngIf="developer"><br *ngIf="developer">
+    
+    <ion-item>
+        <ion-label>{{ 'BACKGROUND_RUN' | translate }}</ion-label>
+        <ion-toggle [(ngModel)]="opt_runBackground" 
+                    (ionChange)="updateOption('R',opt_runBackground)">
         </ion-toggle>
     </ion-item>
 

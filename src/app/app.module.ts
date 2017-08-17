@@ -13,6 +13,7 @@ import { AuthService } from '../providers/auth-service';
 import { SocketService } from '../providers/socket-service';
 import { MyApp } from './app.component';
 
+import { BackgroundMode } from '@ionic-native/background-mode';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { LocalNotifications } from '@ionic-native/local-notifications';
@@ -43,6 +44,7 @@ export function createTranslateLoader(http: Http) {
         MyApp
     ],
     providers: [
+        BackgroundMode,
         StatusBar,
         SplashScreen,
         LocalNotifications,

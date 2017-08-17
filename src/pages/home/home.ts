@@ -19,13 +19,9 @@ export class HomePage {
     private chatAlerts: string;
     private worklistEpisodes: string;
 
-    private developer: boolean = false;
-
     constructor(private nav: NavController, public auth: AuthService, public socket: SocketService) {
         if(this.auth.isLogged()){
             this.socket.initialize();
-
-            this.developer = this.auth.isFIRST();
             this.loadAlerts();  
         }
         this.worklistEpisodes = null;

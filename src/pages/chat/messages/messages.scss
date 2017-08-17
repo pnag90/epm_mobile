@@ -14,6 +14,11 @@ page-messages {
   .footer-btn {
     font-size: x-large;
   }
+
+  .chat-box{
+    /* fixed header */
+    margin-top: 56px;
+  }
   
   img.profile-pic, .chat-box img {
     width: 40px;

@@ -5,7 +5,6 @@ import { ConfService } from '../../providers/conf-service';
 import { AuthService } from '../../providers/auth-service';
 import { SocketService } from '../../providers/socket-service';
 import { ChatUser } from '../../providers/epm-types';
-import { MessagesPage } from './messages/messages';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
@@ -16,6 +15,9 @@ import 'rxjs/add/operator/map';
     templateUrl: 'chat.html'
 })
 export class ChatPage implements OnDestroy {
+
+    private messagesPage: any = 'MessagesPage';
+
     private subscription: Subscription;
     private alerts: Subscription;
     
@@ -83,7 +85,7 @@ export class ChatPage implements OnDestroy {
                 this.currentUser = user;
             }
             // open chat window
-            this.navCtrl.push(MessagesPage, {chatUser:this.currentUser});
+            this.navCtrl.push(this.messagesPage, { chatUser: this.currentUser });
         }
     }
 

@@ -1,5 +1,5 @@
 <ion-content>
-  <ion-navbar color="secondary">
+  <ion-navbar color="secondary" ion-fixed>
     <ion-title>{{chatUser.userName}}</ion-title>
   </ion-navbar>
 
@@ -11,7 +11,7 @@
     <div *ngFor="let message of userMessages" class="message-wrapper">
       <div *ngIf="message && user.userId != message.sender.userId">
         <!--<message-component [msgSide]="'left'" [message]="message"></message-component>-->
-          <img [src]="message.sender.photo || placeholder" class="profile-pic left" *ngIf="message"/>
+          <img [src]="message.sender.photo || userPic" class="profile-pic left" *ngIf="message"/>
           <div class="chat-bubble left slide-left" *ngIf="message">
             <div class="message" *ngFor="let msg of message.messages" autolinker>
               <p [innerHTML]="msg"></p>
@@ -23,7 +23,7 @@
       </div>
       <div *ngIf="message && user.userId === message.sender.userId">
         <!--<message-component [msgSide]="'right'" [message]="message"></message-component>-->
-        <img [src]="message.sender.photo || placeholder" class="profile-pic right" *ngIf="message"/>
+        <img [src]="message.sender.photo || userPic" class="profile-pic right" *ngIf="message"/>
         <div class="chat-bubble right slide-right" *ngIf="message">
           <div class="message" *ngFor="let msg of message.messages" autolinker>
             <p [innerHTML]="msg"></p>

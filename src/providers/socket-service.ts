@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Storage  } from '@ionic/storage';
-import { LocalNotifications } from '@ionic-native/local-notifications';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { User, ChatUser } from './epm-types';
@@ -33,7 +32,6 @@ export class SocketService {
     private reconnectsMax:number = 0;
 
     constructor(private storage: Storage, 
-                private localNotifications: LocalNotifications,
                 public conf: ConfService, 
                 public auth: AuthService,
                 public util: UtilService) {}
@@ -100,6 +98,9 @@ export class SocketService {
                     }
                 }
             }
+
+            // TODO
+            this.notificationsActive = true;
 
             this.socket.on(this.EVENT_MESSAGE_RECEIVED + ':' + this.session.userId, (newMsg) => {
                 console.log('epmChatService: new message',newMsg);
@@ -205,12 +206,15 @@ export class SocketService {
         }
     }
 
-    private notify():void{
+    private notify(user:string):void{
         if( this.notificationsActive==true ){
-            this.localNotifications.schedule({
-                text: 'Recebeu uma nova mensagem',
-                at: new Date(new Date().getTime() + 500)
-            });
+            let m = 'Recebeu uma nova mensagem';
+            if(user && user!=null && user!=''){
+                m += ' de ' + user + '.';
+            }else{
+                m += '.';
+            }
+            this.util.showNotification('Nova mensagem',m);
         }
     }
 
@@ -222,6 +226,7 @@ export class SocketService {
         if (newMsg && newMsg.sender && newMsg.messages) {
             
             var senderId  = newMsg.sender.userId + '';
+            var senderName  = newMsg.sender.userFullName + '';
             var receiptId = newMsg.receipt + '';
 
             var userIdx = isMine ? receiptId : senderId;
@@ -255,7 +260,7 @@ export class SocketService {
             this.storage.set('epmChatMessages',this.chatMessagesData);
             this.chatMessages.next(this.chatMessagesData);
             if(!isMine){
-                this.notify();
+                this.notify(senderName);
             }
             this.updateAlerts();
         }

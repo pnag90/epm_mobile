@@ -16,8 +16,9 @@ export class MessagesPage implements OnDestroy {
   @ViewChild(Content) content: Content;
   @Output() chatNotification = new EventEmitter();
 
-  private user  : User;
-  
+  private user: User;
+  private userPic: string = 'assets/img/avatar.png';
+
   private loading = true;
   public messageForm: any;
 
@@ -49,12 +50,16 @@ export class MessagesPage implements OnDestroy {
   }
 
   loadUserMessages() {
-    console.log("loadUserMessages : chatMessages",this.chatMessages);
     if(this.chatMessages && this.chatUser!=null){
+      console.log("loadUserMessages : chatMessages", this.chatUser, this.chatMessages);
       // user messages
       let user_:string = this.chatUser.userId + "";
       if(this.chatMessages[user_]==undefined || this.chatMessages[user_]==null){
           this.chatMessages[user_] = [];
+      }
+      // user photo
+      if(!this.chatUser.photo){
+
       }
       this.userMessages = this.chatMessages[user_];
       this.messageService.readMessages(user_);

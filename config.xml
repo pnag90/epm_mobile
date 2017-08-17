@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="epm.mobile" version="0.0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="epm.mobile" version="0.0.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>ePM Mobile</name>
     <description>An awesome ePM app.</description>
     <author email="pedro.goncalves@first-global.com" href="https://epm.first-global.com/m">Pedro Fcom</author>
@@ -83,6 +83,7 @@
     <icon src="resources\android\icon\drawable-xhdpi-icon.png" />
     <engine name="android" />
     <engine name="ios" />
+    <plugin name="cordova-plugin-background-mode" spec="^0.7.2" />
     <plugin name="cordova-plugin-browsertab" spec="~0.2.0" />
     <plugin name="cordova-plugin-console" spec="1.0.5" />
     <plugin name="cordova-plugin-device" spec="1.1.4" />

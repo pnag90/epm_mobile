@@ -4,6 +4,7 @@ import { Storage  } from '@ionic/storage';
 import { Md5 } from 'ts-md5/dist/md5';
 import { HttpService } from './http-service';
 import { ConfService } from './conf-service';
+import { UtilService } from './utils-service';
 import { User } from './epm-types';
 import 'rxjs/add/operator/map';
 
@@ -14,7 +15,7 @@ export class AuthService {
     private requestUrl: string;
     private sessionAlias;
 
-    constructor(private http: HttpService, private storage: Storage, private conf:ConfService) {
+    constructor(private http: HttpService, private storage: Storage, private conf:ConfService, private util:UtilService) {
         this.requestUrl = conf.rest();
     }
 
@@ -154,6 +155,7 @@ export class AuthService {
         return Observable.create(observer => {
             this.currentUser = null;
             this.storage.clear();
+            this.util.cancelNotifications();
             window.localStorage.clear();
             observer.next(true);
             observer.complete();
@@ -161,7 +163,7 @@ export class AuthService {
     }
 
     public isFIRST():boolean {
-        return this.currentUser.entityCode.toLocaleLowerCase() == 'first' ;
+        return this.currentUser.entityCode.toLocaleLowerCase() == 'first';
     }
 
 }
