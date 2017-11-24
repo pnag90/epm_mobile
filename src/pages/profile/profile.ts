@@ -1,6 +1,6 @@
-import { ConfService } from '../../providers/conf-service';
+import { ConfProvider } from '../../providers/conf-provider';
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../providers/auth-service';
+import { AuthProvider } from '../../providers/auth-provider';
 import { User } from '../../providers/epm-types';
 import { IonicPage } from 'ionic-angular';
 
@@ -9,16 +9,18 @@ import { IonicPage } from 'ionic-angular';
     selector: 'page-profile',
     templateUrl: 'profile.html'
 })
-export class ProfilePage implements OnInit{
-    public user: User;
+export class ProfilePage{
+    private user: User;
     private defaultPic: string;
 
-    constructor(public auth: AuthService, public conf:ConfService) {
+    constructor(public auth: AuthProvider, public conf:ConfProvider) {
         this.defaultPic = this.conf.defaultUserPhoto();
     }
 
-    ngOnInit():void {
-        this.user = this.auth.getUser();
+    ionViewDidLoad() {
+        if(this.auth.isLogged()){
+            this.user = this.auth.getUser();
+        }
     }
         
 }

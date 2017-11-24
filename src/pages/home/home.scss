@@ -1,13 +1,15 @@
 page-home {
-  .header, .header > .toolbar-background {
-    background-color: color($colors, header);
 
-    .title .toolbar-title, button {
-      color: color($colors, light);
+  .header.app-main-header {
+    
+    .toolbar-background {
+      background: color($colors, header);
     }
+    
+    .toolbar-title {
+      color: color($colors, white);
+    }
+    
   }
-
-  .home {
-    color: color($colors, light);
-  }
+  
 }

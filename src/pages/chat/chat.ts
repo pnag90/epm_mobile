@@ -1,9 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { IonicPage, NavController } from 'ionic-angular';
-import { ConfService } from '../../providers/conf-service';
-import { AuthService } from '../../providers/auth-service';
-import { SocketService } from '../../providers/socket-service';
+import { ConfProvider } from '../../providers/conf-provider';
+import { AuthProvider } from '../../providers/auth-provider';
+import { SocketProvider } from '../../providers/socket-provider';
 import { ChatUser } from '../../providers/epm-types';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/debounceTime';
@@ -14,7 +14,7 @@ import 'rxjs/add/operator/map';
     selector: 'page-chat',
     templateUrl: 'chat.html'
 })
-export class ChatPage implements OnDestroy {
+export class ChatPage {
 
     private messagesPage: any = 'MessagesPage';
 
@@ -25,27 +25,18 @@ export class ChatPage implements OnDestroy {
     private defaultPic:string;
     private currentUser: ChatUser;
 
-    onlineUsers: Array<ChatUser>  = [];
-    offlineUsers: Array<ChatUser> = [];
+    chatUsers: Array<ChatUser>  = [];
 
     searchTerm: string = '';
     searching: any = false;
     searchControl: FormControl;
     chatAlerts = {};
 
-    constructor(public navCtrl: NavController, private auth: AuthService, 
-    private chatService: SocketService, private conf: ConfService) {
-        this.searchControl = new FormControl();
-
-        this.defaultPic = this.conf.defaultUserPhoto();
+    constructor(public navCtrl: NavController, private auth: AuthProvider, 
+    private chatService: SocketProvider, private conf: ConfProvider) {
         
-        this.subscription = this.chatService.getUsers().subscribe(data => { 
-            this.users = data; 
-            this.setFilteredUsers();
-        });
-        this.alerts = this.chatService.getAlerts().subscribe(alerts => {
-            this.chatAlerts = alerts;
-        });
+        this.searchControl = new FormControl();
+        this.defaultPic = this.conf.defaultUserPhoto();  
     }
 
     ngOnDestroy() {
@@ -55,9 +46,14 @@ export class ChatPage implements OnDestroy {
     }
 
     ionViewDidLoad() {
+        this.subscription = this.chatService.getUsers().subscribe(data => { 
+            this.users = data; 
+            this.filterUsers();
+        });
+
         this.searchControl.valueChanges.debounceTime(700).subscribe(search => {
             this.searching = false;
-            this.setFilteredUsers();
+            this.filterUsers();
         }); 
     }
 
@@ -65,18 +61,33 @@ export class ChatPage implements OnDestroy {
         this.searching = true;
     }
 
-    setFilteredUsers() {
-        this.onlineUsers  = this.filterUsers('online');
-        this.offlineUsers = this.filterUsers('offline');
-    }
-
-    filterUsers(state:string) {
+    private filterUsers() {
         if(this.users===undefined || this.users===null){
-            return [];
+            this.chatUsers = [];
         }        
-        return this.users.filter((u:ChatUser) => {
-            return u.state==state && (this.searchTerm.length<3 || u.userName.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1);
+        let array = this.users.filter((u:ChatUser) => {
+            return /*u.state==state &&*/ (this.searchTerm.length<3 || u.userName.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1);
         });   
+        
+
+        if(!array || array === undefined || array.length === 0) {
+            this.chatUsers = [];
+        }else{
+            array.sort((a: any, b: any) => {
+                if (a.lastActivity < b.lastActivity) {
+                    return 1;
+                } else if (a.lastActivity > b.lastActivity) {
+                    return -1;
+                } else if (a.state == b.state) {
+                    return 0;
+                } else if (a.state == 'online') {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            });
+            this.chatUsers = array;
+        }
     }
 
     openUser(user:ChatUser){

@@ -1,59 +1,67 @@
 import { Component } from '@angular/core';
 import { Config, Platform } from 'ionic-angular';
-import { BackgroundMode } from '@ionic-native/background-mode';
+
+import { BrowserTab } from '@ionic-native/browser-tab';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+
 import { TranslateService } from '@ngx-translate/core';
-import { AuthService } from '../providers/auth-service';
+import { AuthProvider } from '../providers/auth-provider';
 
 @Component({
     templateUrl: 'app.html'
 })
 export class MyApp {
-    rootPage = null;
+    rootPage: any = null;
 
-    constructor(platform: Platform,
-                statusBar: StatusBar, 
-                splashScreen: SplashScreen,
-                private backgroundMode: BackgroundMode,
-                private translate: TranslateService,
-                private auth: AuthService,
-                private config: Config) {
-        platform.ready().then(() => {
-            // Okay, so the platform is ready and our plugins are available.
-            // Here you can do any higher level native things you might need.
-            statusBar.styleDefault();
-            // this language will be used as a fallback when a translation isn't found in the current language
-            translate.setDefaultLang('pt');
-            // the lang to use, if the lang isn't available, it will use the current loader to get them
-            translate.use('pt');
+    constructor(public platform: Platform,
+        public statusBar: StatusBar,
+        public splashScreen: SplashScreen,
+        public translate: TranslateService,
+        public authProvider: AuthProvider,
+        public config: Config) {
 
-            translate.get('BACK').subscribe((res: string) => {
-                // Let android keep using only arrow
-                console.log(res);
-                this.config.set('ios', 'backButtonText', res);
-                // To cange label for all platforms: this.config.set('backButtonText', res);
-            });
+        this.initTranslate();
+        this.initializeApp();
+        this.checkAuth();
+    }
 
-            splashScreen.hide();
-
-            // new
-            //this.platform = platform;
-            this.initializeApp();
-            this.checkPreviousAuthorization();
+    ionViewDidLoad() {
+        this.platform.ready().then(() => {
+            //if (this.platform.is('cordova')) {
+                this.initPlugins();
+            //}
         });
-        this.backgroundMode.enable();
+    }
+
+    initPlugins() {
+        //this.statusBar.styleDefault();
+        this.statusBar.styleLightContent();
+        this.statusBar.backgroundColorByHexString('#194378');
+        this.splashScreen.hide();
     }
 
     initializeApp() {
         this.watchForNetworkChanges();
-        /*this.platform.ready().then(() => {
-            console.log('Platform ready');
-        });*/
     }
 
-    checkPreviousAuthorization(): void {
-        this.auth.hasPreviousAuthorization().then((isAuthenticated) => {
+    initTranslate() {
+        // Set the default language for translation strings, and the current language.
+        this.translate.setDefaultLang('pt');
+
+        if (this.translate.getBrowserLang() !== undefined) {
+            this.translate.use(this.translate.getBrowserLang());
+        } else {
+            this.translate.use('pt'); // Set your language here
+        }
+
+        this.translate.get(['BACK_BUTTON_TEXT']).subscribe(values => {
+            this.config.set('ios', 'backButtonText', values.BACK_BUTTON_TEXT);
+        });
+    }
+
+    checkAuth(): void {
+        this.authProvider.hasPreviousAuthorization().then((isAuthenticated) => {
             if (!isAuthenticated) {
                 this.rootPage = 'LoginPage';
             } else {
@@ -70,7 +78,7 @@ export class MyApp {
     }
 
     onOffline() {
-         console.log('network was disconnected :-(');
+        console.log('network was disconnected :-(');
     }
 
     onOnline() {

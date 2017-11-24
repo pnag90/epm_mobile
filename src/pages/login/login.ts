@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
+import { BrowserTab } from '@ionic-native/browser-tab';
 import { IonicPage, NavController, AlertController, LoadingController, Loading } from 'ionic-angular';
-import { AuthService } from '../../providers/auth-service';
+import { AuthProvider } from '../../providers/auth-provider';
 
 @IonicPage()
 @Component({
@@ -10,16 +11,25 @@ import { AuthService } from '../../providers/auth-service';
 export class LoginPage {
 
     loading: Loading;
-    credentials = {username: '', password: '', institution: ''};
+    credentials = { username: '', password: '', institution: '' };
 
-    constructor(private nav: NavController, 
-                public auth: AuthService, 
-                private alertCtrl: AlertController, 
-                private loadingCtrl: LoadingController) {}
+    constructor(private nav: NavController,
+        private auth: AuthProvider,
+        private alertCtrl: AlertController,
+        private loadingCtrl: LoadingController,
+        private browserTab: BrowserTab) { }
+
+
+    ionViewDidLoad() {
+        if(this.auth.isLogged()){
+           this.nav.setRoot('HomePage');
+        }
+    }
 
     login() {
         this.showLoading();
         this.auth.login(this.credentials).then((data) => {
+            console.log("on login",data);
             if (data.isError) {
                 this.showError(data.error);
             } else {
@@ -48,7 +58,18 @@ export class LoginPage {
             subTitle: text,
             buttons: ['OK']
         });
-        alert.present(prompt);
+        alert.present();
+    }
+
+    poweredBy() {
+        let url = 'http://www.first-global.com/pt-pt/Solucoes/epm';
+        this.browserTab.isAvailable()
+            .then((isAvailable: boolean) => {
+                if (isAvailable) {
+                    this.browserTab.openUrl(url);
+                }
+            })
+            .catch(err => console.error(err));
     }
 
 }

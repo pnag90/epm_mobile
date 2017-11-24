@@ -1,22 +1,27 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule, Http } from '@angular/http';
-import { TranslateModule, TranslateLoader, TranslatePipe } from "@ngx-translate/core";
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { BrowserModule } from '@angular/platform-browser';
+
+import { BrowserTab } from '@ionic-native/browser-tab';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
+
+import { TranslateLoader, TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
 import { IonicStorageModule } from '@ionic/storage';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
-import { HttpService } from '../providers/http-service';
-import { UtilService } from '../providers/utils-service';
-import { ConfService } from '../providers/conf-service';
-import { AuthService } from '../providers/auth-service';
-import { SocketService } from '../providers/socket-service';
+import { HttpProvider } from '../providers/http-provider';
+import { UtilsProvider } from '../providers/utils-provider';
+import { UserProvider } from '../providers/user-provider';
+import { ConfProvider } from '../providers/conf-provider';
+import { AuthProvider } from '../providers/auth-provider';
+import { SocketProvider } from '../providers/socket-provider';
+
 import { MyApp } from './app.component';
 
-import { BackgroundMode } from '@ionic-native/background-mode';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { LocalNotifications } from '@ionic-native/local-notifications';
 
 export function createTranslateLoader(http: Http) {
     return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -36,23 +41,45 @@ export function createTranslateLoader(http: Http) {
                 deps: [Http]
             }
         }),
-        IonicModule.forRoot(MyApp),
+        IonicModule.forRoot(MyApp, {
+            preloadModules: true
+        }),
         IonicStorageModule.forRoot()
     ],
-    bootstrap: [IonicApp],
+    exports: [
+        MyApp
+    ],
     entryComponents: [
         MyApp
     ],
     providers: [
-        BackgroundMode,
+        //BackgroundMode,
+        BrowserTab,
         StatusBar,
         SplashScreen,
         LocalNotifications,
-        UtilService,
-        HttpService,
-        ConfService,
-        AuthService,
-        SocketService,
-        {provide: ErrorHandler, useClass: IonicErrorHandler}]
+        UtilsProvider,
+        HttpProvider,
+        ConfProvider,
+        UserProvider,
+        AuthProvider,
+        SocketProvider,
+        {provide: ErrorHandler, useClass: IonicErrorHandler}
+    ],
+    bootstrap: [IonicApp],
+    
+   /* providers: [
+        //BackgroundMode,
+        BrowserTab,
+        StatusBar,
+        SplashScreen,
+        LocalNotifications,
+        UtilsProvider,
+        HttpProvider,
+        ConfProvider,
+        UserProvider,
+        AuthProvider,
+        SocketProvider,
+        {provide: ErrorHandler, useClass: IonicErrorHandler}]*/
 })
 export class AppModule {}

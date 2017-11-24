@@ -1,50 +1,68 @@
-<ion-content>
-  <ion-navbar color="secondary" ion-fixed>
-    <ion-title>{{chatUser.userName}}</ion-title>
-  </ion-navbar>
+<ion-header >
+  <ion-navbar color="secondary">
+    <ion-title *ngIf="chatUser">{{chatUser.userName}}</ion-title>
+  </ion-navbar>  
+</ion-header>
 
+<ion-content>
   <div *ngIf="loading" class="spinner-container">
     <ion-spinner></ion-spinner>
   </div>
 
-  <div #chatbox class="chat-box" *ngIf="userMessages">
-    <div *ngFor="let message of userMessages" class="message-wrapper">
-      <div *ngIf="message && user.userId != message.sender.userId">
-        <!--<message-component [msgSide]="'left'" [message]="message"></message-component>-->
-          <img [src]="message.sender.photo || userPic" class="profile-pic left" *ngIf="message"/>
-          <div class="chat-bubble left slide-left" *ngIf="message">
-            <div class="message" *ngFor="let msg of message.messages" autolinker>
-              <p [innerHTML]="msg"></p>
-            </div>
-          </div>    
-          <div class="message-detail left">
-            <span class="timestamp">{{message.timestamp | moment:'HH:mm' | lowercase}}</span>
-          </div> 
+  <div class="chat-box" *ngIf="userMessages && chatUser">
+    <div *ngFor="let msg of userMessages" class="message" [class.left]="msg.sender.userId==chatUser.userId" [class.right]="msg.sender.userId==user.userId">
+
+      <img [src]="chatUser.photo | safe: 'url'" class="user-img" alt="" src="" *ngIf="msg.sender.userId==chatUser.userId && chatUser.photo"/>
+      <img [src]="userPic" class="user-img" alt="" src="" *ngIf="msg.sender.userId==chatUser.userId && !chatUser.photo"/>
+
+      <img [src]="user.photo | safe: 'url'" class="user-img" alt="" src="" *ngIf="msg.sender.userId==user.userId && user.photo"/>
+      <img [src]="userPic" class="user-img" alt="" src="" *ngIf="msg.sender.userId==user.userId && !user.photo"/>
+
+      <div class="msg-detail">
+        <div class="msg-info">
+          <p>&nbsp;&nbsp;{{ msg.timestamp | moment:"ago" | lowercase }}</p>
+        </div>
+        <div class="msg-content">
+          <span class="triangle"></span>
+          <p class="line-breaker" *ngFor="let txt of msg.messages">{{txt}}</p>
+        </div>
       </div>
-      <div *ngIf="message && user.userId === message.sender.userId">
-        <!--<message-component [msgSide]="'right'" [message]="message"></message-component>-->
-        <img [src]="message.sender.photo || userPic" class="profile-pic right" *ngIf="message"/>
-        <div class="chat-bubble right slide-right" *ngIf="message">
-          <div class="message" *ngFor="let msg of message.messages" autolinker>
-            <p [innerHTML]="msg"></p>
-          </div>
-        </div>    
-        <div class="message-detail right">
-          <span class="timestamp">{{message.timestamp | moment:'HH:mm' | lowercase}}</span>
-        </div> 
-      </div>
-      <div class="cf"></div>
+
     </div>
   </div>
 </ion-content>
 
-<ion-footer>
+<ion-footer no-border>
+  <ion-grid class="input-wrap" *ngIf="chatUser">
+    <ion-row>
+      <!--
+      <ion-col col-2>
+        <button ion-button clear icon-only item-right (click)="switchEmojiPicker()">
+          <ion-icon name="md-happy"></ion-icon>
+        </button>
+      </ion-col>
+    -->
+
+      <ion-col col-10>
+        <ion-textarea #chat_input placeholder="..." [(ngModel)]="chatBox" (keyup.enter)="sendMsg()" (focus)="onFocus()" [disabled]="chatUser.state!='online'">
+        </ion-textarea>
+      </ion-col>
+
+      <ion-col col-2>
+        <button ion-button clear icon-only item-right (click)="sendMsg()" [disabled]="chatUser.state!='online'">
+          <ion-icon name="ios-send" ios="ios-send" md="md-send"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!--<emoji-picker *ngIf="showEmojiPicker" [(ngModel)]="chatBox"></emoji-picker>-->
+
   <form [formGroup]="messageForm" (submit)="send(chatBox)" novalidate>
     <ion-item>
-      <ion-input formControlName="message" [(ngModel)]="chatBox" [disabled]="chatUser.state!='online'"></ion-input>
+      <ion-input formControlName="message" [(ngModel)]="chatBox"></ion-input>
       <button ion-button clear (click)="send(chatBox)" item-right [disabled]="chatUser.state!='online'">
-          {{ 'SEND' | translate}}
-          <ion-icon class="footer-btn" name="send" style="padding-left: 5px;"></ion-icon>
+        {{ 'SEND' | translate}}
+        <ion-icon class="footer-btn" name="send" style="padding-left: 5px;"></ion-icon>
       </button>
     </ion-item>
   </form>

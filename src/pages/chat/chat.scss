@@ -5,5 +5,28 @@ page-chat {
         align-self: flex-start;
         margin-top: 14px;
     }
+
+    .item item-block item-ios ion-label{
+        margin: 8px 4px 8px 0;
+    }
+
+    .user-state {
+        span {
+            border-radius: 50%;
+            width: 8px;
+            max-height: 8px;
+            font-size: 8px;
+            display: inline-block;
+        }
+    }
+
+    .user-state-online{
+        background: #739e73;
+        color: #739e73;
+    }
+    .user-state-offline{
+        background: #cccccc;
+        color: #cccccc;
+    }
     
 }

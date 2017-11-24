@@ -1,5 +1,13 @@
 page-episode {
 
+    ion-header{
+        .toolbar-ios, .segment-ios {
+            height:  $toolbar-ios-height !important;
+            max-height:  $toolbar-ios-height !important;
+            min-height:  $toolbar-ios-height !important;
+        }
+    }
+
     ion-item:not(:first-child) {
         .item-inner{
             border-bottom-color: #CCC !important;

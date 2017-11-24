@@ -1,71 +1,110 @@
 'use strict';
 
+export class UserOption {
+    id: string;
+    userid: number;
+    code: string;
+    value: string;
+
+    constructor(code:string, val:string, uid: number) {
+        this.code = code;
+        this.value = val;
+        this.userid = uid;
+        this.id = this.userid + '_' + this.code;
+    }
+}
+
 export class User {
-    userId: string;
-    coworkerId: string;
-    username: string;
-    userFullName: string;
-    email: string;
-    entityId: string;
+    entityId: number;
+    entityFdfId: number;
     entityCode: string;
+    entityName: string;
+    coworkerId: number;
+    userId: number;
+    username: string;
+    userFullname: string;
+    userEmail: string;
     languageCode: string;
     photo: string;
-    options: Array<any>;
+    permissions: Array<UserOption>;
+    options: Array<UserOption>;
 
-
-    constructor(userId:string, coworkerId:string, uname: string, fullname:string, email: string, entityId:string, entityCode:string, lang:string, pic:string) {
-        this.userId = userId;
-        this.coworkerId = coworkerId;
-        this.username = uname;
-        this.userFullName = fullname;
-        this.email = email;
-        this.entityId = entityId;
-        this.entityCode = entityCode;
-        this.languageCode = lang;
-        this.photo = pic;
-        this.options = [];
-    }
+    constructor(entityId: number, entityFdfId: number, entityCode: string, entityName: string, 
+        coworkerId: number, userId: number, username: string, userFullname: string, userEmail: string, 
+        languageCode: string, photo: string, permissions: Array<UserOption>, options: Array<UserOption>) {
+            
+            this.entityId = entityId;
+            this.entityFdfId = entityFdfId;
+            this.entityCode = entityCode;
+            this.entityName = entityName;
+            this.coworkerId = coworkerId;
+            this.userId = userId;
+            this.username = username;
+            this.userFullname = userFullname;
+            this.userEmail = userEmail;
+            this.languageCode = languageCode;
+            this.photo = photo;
+            this.permissions = new Array<UserOption>();
+            this.options = options;
+        }
 }
 
 // Epm GenericEpisodeType.java
 export class Episode {
-    areaCode:string;
+    id: number;
     areaFk:string;
-    episodeFk:string;
-    episodeState:string;
-    episodeStatus:string;
+    areaCode:string;
+    entityFk:number;
+    insuranceFk:number;
     insuranceDesc:string;
-    insuranceFk:string;
-    observations:string;
-    patientAge:number;
-    patientBirthDate:string;
+    insuranceNumber:string;
     patientFk:string;
     patientName:string;
-    patientPhoto:string;
+    patientBirthdate:string;
+    patientAge:object;
+    patientSex:string;
+    patientProcessNum:string;
     patientAddress:string;
     patientMail:string;
     patientPhone:string;
-    patientProcessNum:string;
-    patientSex:string;
-    scheduledEndDate:string;
-    scheduledEndDateTime:string;
-    scheduledStartDate:string;
-    scheduledStartDateTime:string;
-    serviceFk:number;
-    serviceName:string;
+    patientPhoto:any;
     teamFk:number;
     teamName:string;
-    colorState:string;
+    teamMembers:Array<number>;
+    serviceFk:number;
+    serviceName:string;
+    scheduleFk:number;
+    scheduledStartDate:string;
+    scheduledStartTime:string;
+    scheduledEndDate:string;
+    scheduledEndTime:string;
+    state:string;
+    status:string;
+    color: string;
+    comingTime:string;
+    callTime:string;
+    outgoingTime:string;
+    startDate:string;
+    cancelledDate:string;
+    cancelledFk:number;
+    startedByCoworkerFk:number;
+    observations:string;
+    confirmation:string;
 
     constructor(){}
 }
 
 export class ChatUser {
-    userId: string;
+    userId: number;
     userName: string;
-    state: string = 'offline';
-    shortDescription: string;
+    profName: string;
+    profNum: string;
+    userBirth: string;
+    email: string;
     photo: string;
+    state: string = 'offline';  
+    lastActivity: number;
+    alerts: number = 0;
     canReceiveCall: null;
 }
 

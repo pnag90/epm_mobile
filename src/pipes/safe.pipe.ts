@@ -17,7 +17,8 @@ export class SafePipe {
 			case 'script': return this._sanitizer.bypassSecurityTrustScript(value);
 			case 'url': return this._sanitizer.bypassSecurityTrustUrl(value);
 			case 'resourceUrl': return this._sanitizer.bypassSecurityTrustResourceUrl(value);
-			default: throw new Error(`Invalid safe type specified: ${type}`);
+			//default: throw new Error(`Invalid safe type specified: ${type}`);
+			default: return this._sanitizer.bypassSecurityTrustUrl(value);
 		}
 	}
 

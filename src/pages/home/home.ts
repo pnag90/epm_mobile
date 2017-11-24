@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
-import { AuthService } from '../../providers/auth-service';
-import { SocketService } from '../../providers/socket-service';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, Tabs } from 'ionic-angular';
+import { AuthProvider } from '../../providers/auth-provider';
+import { SocketProvider } from '../../providers/socket-provider';
 import { Subscription } from 'rxjs/Subscription';
+import { UtilsProvider } from '../../providers/utils-provider';
+import { UserProvider } from '../../providers/user-provider';
 
 @IonicPage()
 @Component({
@@ -10,33 +12,39 @@ import { Subscription } from 'rxjs/Subscription';
     templateUrl: 'home.html'
 })
 export class HomePage {
-    private subscription: Subscription;
+    
+    @ViewChild('mainTabs') tabs: Tabs;
     private chatPage: any = 'ChatPage';
     private profilePage: any = 'ProfilePage';
     private worklistPage: any = 'WorklistPage';
     private optionsPage: any = 'OptionsPage';
 
+    private subscription: Subscription;
+
     private chatAlerts: string;
     private worklistEpisodes: string;
 
-    constructor(private nav: NavController, public auth: AuthService, public socket: SocketService) {
+    constructor(public nav: NavController, 
+                public auth: AuthProvider, 
+                public socket: SocketProvider,
+                public utils: UtilsProvider,
+                public user: UserProvider) {
+        
+    }
+
+    ionViewDidLoad() {
         if(this.auth.isLogged()){
-            this.socket.initialize();
-            this.loadAlerts();  
+            //this.socket.initialize();
+            this.loadAlerts();
+            this.utils.showNotification('OLA','Teste');
         }
         this.worklistEpisodes = null;
     }
 
     private loadAlerts() {
         this.subscription = this.socket.getAlerts().subscribe(alerts => {
-            let alertCount: number = 0;
-            if(alerts){
-                for (let a in alerts) {
-                    console.log(a);
-                    alertCount +=  alerts[a] || 0;   
-                }
-            }
-            if(alertCount>0){
+            let alertCount: number = alerts ||  0;
+            if(alertCount > 0){
                 this.chatAlerts = alertCount + "";
             }else{
                 this.chatAlerts = null;
@@ -45,13 +53,16 @@ export class HomePage {
     }
 
     public logout() {
-        this.auth.logout().subscribe(res => {
+        this.auth.logout().then(res => {
             this.socket.disconnect();
+            this.user.setUser(null);
             this.nav.setRoot('LoginPage');
+        }, err => {
+            
         });
     }
 
-    ngOnDestroy() {
+    ionViewWillUnload () {
         // unsubscribe to ensure no memory leaks
         this.subscription.unsubscribe();
     }

@@ -1,21 +1,21 @@
-<ion-header>
+<ion-header class="app-main-header">
     <ion-navbar class="header">
-        <ion-title>
+        <ion-title color="light"> 
             ePM
         </ion-title>
         <ion-buttons end>
-            <button ion-button (click)="logout()">
+            <button ion-button color="light" clear (click)="logout()">
                 <ion-icon name="log-out"></ion-icon>
             </button>
         </ion-buttons>
     </ion-navbar>
 </ion-header>
 
-<ion-content class="home">
+<ion-content #mainTabs class="home">
     <ion-tabs>
         <ion-tab tabIcon="contact" tabTitle="Perfil" [root]="profilePage"></ion-tab>
         <ion-tab tabIcon="calendar" tabTitle="Marcações" tabBadge="{{worklistEpisodes}}" [root]="worklistPage"></ion-tab>
         <ion-tab tabIcon="chatbubbles" tabTitle="Mensagens" tabBadge="{{chatAlerts}}" tabBadgeStyle="danger" [root]="chatPage"></ion-tab>
         <ion-tab tabIcon="options" tabTitle="Opções" [root]="optionsPage"></ion-tab>
-    </ion-tabs>`
+    </ion-tabs>
 </ion-content>

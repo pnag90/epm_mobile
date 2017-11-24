@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Episode } from '../../../providers/epm-types';
-import { ConfService } from '../../../providers/conf-service';
+import { ConfProvider } from '../../../providers/conf-provider';
 
 @IonicPage()
 @Component({
@@ -13,24 +13,38 @@ export class EpisodePage {
     private defaultPic: string;
     private segment: string;
     private history: Array<Episode>;
-    private start: string = "0";
-    private size: string = "12";
+    
+    private pageNumber: number = 0;
+    private pageSize: number = 30;
     private loading: boolean;
+    
+    private birthString: string;
 
-    constructor(private navCtrl: NavController, public params: NavParams, private conf:ConfService) {
+    constructor(private navCtrl: NavController, public params: NavParams, private conf:ConfProvider) {
         this.loading = false;
         this.segment = 'episode';
         this.episode = this.params.get('episode');
+        this.birthString = "";
+
+        if(this.episode){
+            let str = this.episode.patientBirthdate;
+            if(this.episode.patientAge){
+                let ageValue = this.episode.patientAge['value'] + "";
+                let ageUnit = this.episode.patientAge['unitLocale'] + "";
+                str += ' (' + ageValue + ' anos)';
+            }
+            this.birthString = str;
+        }
+
         this.defaultPic = this.conf.defaultUserPhoto();
         this.getPatientHistory(this.episode.patientFk);
     }
 
     getPatientHistory(patientId:string){
         this.loading = true;
-        let url = '/hiscore/mobilebiz/patienthistory/' + patientId + "?start=" + this.start + "&size=" + this.size;
-        this.conf.request(url).then(data => {
-            console.log(data);
-            this.history = this.conf.getEpisodes(data.RETURN || []);
+        let url = '/mobile/appointment/episodes?u=' + patientId + "&ps=" + this.pageSize + "&pn=" + this.pageNumber;
+        this.conf.get(url).then(result => {
+            this.history = this.conf.getEpisodes(result || []);
             this.loading = false;
         }, err => {
             console.error(err);

@@ -1,6 +1,7 @@
 {
   "HELLO": "Ola",
   "EPISODE": "Episódio",
+  "INSTITUTION": "Entidade",
   "PATIENT": "Utente",
   "NAME": "Nome",
   "EMAIL": "Email",
@@ -8,17 +9,32 @@
   "HOUR": "Hora",
   "SERVICE": "Serviço",
   "EFR": "Efr",
-  "USER": "Efr",
+  "HISTORY": "Histórico",
+  "BIRTH": "Data de Nascimento",
+  "USER": "Utilizador",
   "USER_OPTIONS": "Opções do Utilizador",
   "NOTIFICATIONS": "Notificações",
   "APPOINTMENTS": "Marcações",
   "MESSAGES": "Mensagens",
   "BACKGROUND_RUN": "Correr em background",
+  "ALL_EPISODES": "Todos",
+  "FUTURE_EPISODES" : "Futuras",
+  "APP_TYPE": "Tipo de episódio",
+  "APP_MED_TYPE": "Tipo de episódio",
 
-  "BACK": "",
+
+  "BACK_BUTTON_TEXT": "",
   "DONE": "Selecionar",
   "CANCEL": "Cancelar",
   "SEND": "Enviar",
+  "SEARCH": "Pesquisar",
+
+  "AGE_YEARS": "anos",
+  "AGE_YEAR": "ano",
+  "AGE_MONTHS": "meses",
+  "AGE_MONTH": "mês",
+  "AGE_DAYS": "dias",
+  "AGE_DAY": "dia",
 
   "OPTIONS": "Opções",
   "CHAT_NO_USERS": "Sem utilizadores"

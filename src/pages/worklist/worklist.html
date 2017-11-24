@@ -1,29 +1,75 @@
+<ion-header>
+    <ion-navbar no-border-bottom>
+        <ion-segment [(ngModel)]="worklistFilter" (ionChange)="filterChanged()">
+            <ion-segment-button value="all">
+                {{'ALL_EPISODES' | translate }}
+            </ion-segment-button>
+            <ion-segment-button value="future">
+                {{'FUTURE_EPISODES' | translate }}
+            </ion-segment-button>
+        </ion-segment>
+
+        <!-- todo - list options 
+      <ion-buttons end>
+        <button ion-button icon-only (click)="presentFilter()">
+          <ion-icon ios="ios-options-outline" md="md-options"></ion-icon>
+        </button>
+      </ion-buttons>-->
+    </ion-navbar>
+
+    <ion-toolbar no-border-top>
+        <!--
+        <ion-searchbar color="primary" [(ngModel)]="searchTxt" (ionInput)="search()" placeholder="{{ 'SEARCH' | translate }}">
+        </ion-searchbar>
+    -->
+        <ion-item no-border-bottom>
+            <ion-label>{{'DATE' | translate }}</ion-label>
+            <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" [(ngModel)]="currentDate" (ionChange)="dateChanged()"
+                yearValues="2017" [doneText]="translate.instant('DONE')" [cancelText]="translate.instant('CANCEL')" no-border-bottom>
+            </ion-datetime>
+        </ion-item>
+    </ion-toolbar>
+</ion-header>
+
 <ion-content>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    
     <div *ngIf="loading" class="spinner-container">
         <ion-spinner></ion-spinner>
     </div>
-
+    <!--
     <ion-item>
         <ion-label>{{ 'DATE' | translate }}</ion-label>
-        <ion-datetime displayFormat="DD/MM/YYYY" 
-                      pickerFormat="DD MM YYYY" 
-                      [(ngModel)]="currentDate" 
-                      (ionChange)="dateChanged()"
-                      yearValues="2017"
-                      [doneText]="translate.instant('DONE')"
-                      [cancelText]="translate.instant('CANCEL')">
+        <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" [(ngModel)]="currentDate" (ionChange)="dateChanged()"
+            yearValues="2017" [doneText]="translate.instant('DONE')" [cancelText]="translate.instant('CANCEL')">
         </ion-datetime>
-    </ion-item>
-    <ion-list>
-        <ion-item *ngFor="let episode of episodes" (click)="openEpisode(episode)">
-            <ion-avatar item-left>
-                <img [src]="'data:image/jpeg;base64,'+episode.patientPhoto | safe: 'url'" class="profile-pic" *ngIf="episode.patientPhoto"/>
+    </ion-item>-->
+    <ion-list #appointmentList>
+        <ion-item #appointmentItem *ngFor="let episode of episodes" [ngClass]="'app-state-'+ episode.color">
+            <!--(click)="openEpisode(episode)" 
+                
+                <ion-avatar item-left>
+                <img [src]="'data:image/jpeg;base64,' + episode.patientPhoto" class="profile-pic" *ngIf="episode.patientPhoto"
+                />
                 <img [src]="defaultPic" *ngIf="!episode.patientPhoto">
             </ion-avatar>
             <div class="app-state" [ngClass]="episode.colorState"></div>
             <h2> {{ episode.scheduledStartDateTime }} </h2>
             <h3> {{ episode.patientName }}, {{ episode.patientAge }} anos </h3>
-            <p> {{ episode.areaCode }} - {{ episode.serviceName }} </p>
+            <p> {{ episode.areaCode }} - {{ episode.serviceName }} </p>-->
+
+            <button ion-item (click)="openEpisode(episode)">
+                <ion-avatar item-left>
+                    <img [src]="('data:image/jpeg;base64,' + episode.patientPhoto) | safe: 'url'" class="profile-pic" *ngIf="episode.patientPhoto"/>
+                    <img [src]="defaultPic" *ngIf="!episode.patientPhoto"/>
+                </ion-avatar>
+                <h3>{{ episode.scheduledStartDateTime }}</h3>
+                <p>{{ episode.patientName }} <span *ngIf="episode.patientAge"> , {{ episode.patientAge.value }} {{ episode.patientAge.unitLocale | translate }} </span></p>
+                <p>{{ episode.areaCode }} &mdash; {{ episode.serviceName }}</p>
+            </button>
+
         </ion-item>
     </ion-list>
 </ion-content>

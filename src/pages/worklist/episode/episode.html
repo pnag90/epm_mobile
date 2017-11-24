@@ -1,12 +1,13 @@
-<ion-content>
+<ion-header>
     <ion-navbar color="secondary">
-        <!--<ion-title>{{ 'EPISODE' | translate}}</ion-title>-->
         <ion-segment [(ngModel)]="segment">
-            <ion-segment-button value="episode">Episódio</ion-segment-button>
-            <ion-segment-button value="history">Histórico</ion-segment-button>
+            <ion-segment-button value="episode">{{ 'EPISODE' | translate }}</ion-segment-button>
+            <ion-segment-button value="history">{{ 'HISTORY' | translate }}</ion-segment-button>
         </ion-segment>
     </ion-navbar>
+</ion-header>
 
+<ion-content>
     <div *ngIf="loading" class="spinner-container">
         <ion-spinner></ion-spinner>
     </div>
@@ -26,6 +27,11 @@
                 <ion-input [(ngModel)]="episode.patientName" readonly></ion-input>
             </ion-item>
 
+            <ion-item>
+                <ion-label stacked>{{ 'BIRTH' | translate}}</ion-label>
+                <ion-input [(ngModel)]="episode.birthString" readonly></ion-input>
+            </ion-item>
+
             <ion-item *ngIf="episode.insuranceDesc">
                 <ion-label stacked>{{ 'EFR' | translate}}</ion-label>
                 <ion-input [(ngModel)]="episode.insuranceDesc" readonly></ion-input>
@@ -33,7 +39,17 @@
 
             <ion-item>
                 <ion-label stacked>{{ 'HOUR' | translate}}</ion-label>
-                <ion-input [(ngModel)]="episode.scheduledStartDateTime" readonly></ion-input>
+                <ion-input [(ngModel)]="episode.scheduledStartTime" readonly></ion-input>
+            </ion-item>
+
+            <ion-item *ngIf="episode.appointmentType">
+                <ion-label stacked>{{ 'APP_TYPE' | translate}}</ion-label>
+                <ion-input [(ngModel)]="episode.appointmentType" readonly></ion-input>
+            </ion-item>
+
+            <ion-item *ngIf="episode.medAppointmentType">
+                <ion-label stacked>{{ 'APP_MED_TYPE' | translate}}</ion-label>
+                <ion-input [(ngModel)]="episode.medAppointmentType" readonly></ion-input>
             </ion-item>
 
             <ion-item>
@@ -45,8 +61,8 @@
         <div *ngSwitchCase="'history'">
             <ion-list no-lines>
                 <ion-item *ngFor="let his of history">
-                    <h2 item-left> {{ his.scheduledStartDate }} {{ his.scheduledStartDateTime }} </h2>
-                    <p> {{ his.teamName }}, {{ episode.serviceName }}</p>
+                    <h2 item-left> {{ his.scheduledStartDate | moment:"DD-MM-YYYY HH:mm" }}</h2>
+                    <p> {{ his.teamName }}, {{ his.serviceName }}</p>
                 </ion-item>
             </ion-list>
         </div>

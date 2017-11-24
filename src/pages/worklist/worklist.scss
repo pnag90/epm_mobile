@@ -1,6 +1,65 @@
+$episode-states: (
+    M:#8E8D93,
+    CHE:#FED035,
+    CHA: #739e73,
+    CON: #57889C,
+    SAI: #69BB7B,
+    FAL: #AC282B,
+    ANU: #AC282B
+);
+
+$toolbar-color: rgb(248, 248, 248); // ios default color
+
 page-worklist {
 
-    .app-state { 
+    ion-header{
+        .toolbar-ios, .segment-ios {
+            height:  $toolbar-ios-height !important;
+            max-height:  $toolbar-ios-height !important;
+            min-height:  $toolbar-ios-height !important;
+        }
+
+        .segment-ios {
+            padding-top: 0 !important;
+        }
+       
+        ion-item{
+            background-color: transparent !important;
+        }
+    }
+ 
+    
+    ion-list > ion-item {
+        margin-bottom: 3px !important;
+
+        ion-label{
+            margin: 3px 0px 3px 0 !important;
+        }
+
+        button {
+            padding-left: 0 !important;
+
+            ion-avatar{
+                margin: 0 8px 0 0 !important;
+            }
+
+            ion-label, .item-inner {
+                border: 0 !important;
+                border-bottom: 0 solid transparent !important;
+            }
+        }
+
+        img.profile-pic {
+            border-radius: 6px !important;
+            max-width: 36px !important;
+            max-height: 36px !important;
+            width: auto !important;
+            height: auto !important;
+        }
+        
+    }
+
+    /*.app-state { 
         width: 4px;
         height: 61px;
         position: absolute;
@@ -17,31 +76,13 @@ page-worklist {
         h2,h3,p{
             margin-left: 10px !important;
         }
-    }
+    }*/
 
-
-
-    .spinner-container {
-        z-index: 9999;
-        transition: z-index 0.2s step-start;
-        width: 100%;
-        height: 100%;
-        position: absolute;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-
-        .backdrop {
-            opacity: 0.3;
+    @each $state, $color in $episode-states {
+        ion-item.app-state-#{$state} ion-label {
+            border-left: 2px solid $color;
+            padding-left: 10px;
         }
-
-        ion-spinner {
-            width: 60px;
-            height: 60px;
-        }
-        
     }
 
     

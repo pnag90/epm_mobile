@@ -7,15 +7,16 @@ page-profile {
         }
     }
 
-    ion-avatar.user-photo{
+    .user-photo{
         width: 100%;
         min-height: 140px;
         text-align: center;
 
         img {
             display: inline-block !important; 
-            width: 120px !important; 
-            height: 120px !important; 
+            max-width: 160px; 
+            max-height: 130px; 
+            border-radius: 20px;
         }
     }
 
