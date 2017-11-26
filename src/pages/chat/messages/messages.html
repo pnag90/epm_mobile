@@ -44,7 +44,7 @@
     -->
 
       <ion-col col-10>
-        <ion-textarea #chat_input placeholder="..." [(ngModel)]="chatBox" (keyup.enter)="sendMsg()" (focus)="onFocus()" [disabled]="chatUser.state!='online'">
+        <ion-textarea #chat_input placeholder="..." [(ngModel)]="chatBox" (keyup.enter)="send()" (focus)="onFocus()" [disabled]="chatUser.state!='online'">
         </ion-textarea>
       </ion-col>
 

@@ -20,7 +20,7 @@ export class HttpProvider {
     */
 
     constructor(public http: Http, private storage: Storage) {
-        this.EPM_URL = "http://192.168.19.112:8090"; //"http://192.168.20.73:8080/fcmobile";
+        this.EPM_URL = "http://192.168.20.73:8080/fcmobile"; //"http://192.168.20.73:8080/fcmobile";
         this.EPM_SOCKET_URL = "http://192.168.20.73:3001";
         this.requestHeader = new Headers();
         this.requestHeader.append('Accept', 'application/json');

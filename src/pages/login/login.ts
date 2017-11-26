@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { BrowserTab } from '@ionic-native/browser-tab';
-import { IonicPage, NavController, AlertController, LoadingController, Loading } from 'ionic-angular';
+import { IonicPage, Content, NavController, AlertController, LoadingController, Loading } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth-provider';
 
 @IonicPage()
@@ -9,7 +9,7 @@ import { AuthProvider } from '../../providers/auth-provider';
     templateUrl: 'login.html'
 })
 export class LoginPage {
-
+    @ViewChild(Content) content: Content;
     loading: Loading;
     credentials = { username: '', password: '', institution: '' };
 
@@ -59,6 +59,18 @@ export class LoginPage {
             buttons: ['OK']
         });
         alert.present();
+    }
+
+    onFocus() {
+        this.scrollToBottom();
+    }
+
+    scrollToBottom() {
+        setTimeout(() => {
+            if (this.content.scrollToBottom) {
+                this.content.scrollToBottom();
+            }
+        }, 500)
     }
 
     poweredBy() {
