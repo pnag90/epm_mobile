@@ -6,7 +6,7 @@
         </ion-col>
         <ion-col></ion-col>
     </ion-row>
-    <div class="login-box">
+    <div class="login-box" [id]="loginBox">
         <form (ngSubmit)="login()" #registerForm="ngForm">
             <ion-row>
                 <ion-col>

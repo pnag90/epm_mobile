@@ -23,7 +23,7 @@ export class OptionsPage {
 
     constructor(public auth: AuthProvider, private nav: NavController, private conf: ConfProvider, private userProvider:UserProvider /*, private backgroundMode: BackgroundMode*/) {
         this.user = this.auth.getUser();
-        this.developer = this.auth.isFIRST();
+        this.developer = this.auth.isBoss();
 
         this.opt_notifMessages = this.DEFAULT_NOTIF_MESSAGES;
         this.opt_notifAppointments = this.DEFAULT_NOTIF_APPOINTMENTS;

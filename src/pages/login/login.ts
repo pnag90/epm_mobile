@@ -62,15 +62,20 @@ export class LoginPage {
     }
 
     onFocus() {
-        this.scrollToBottom();
+        this.scrollToForm();
     }
 
-    scrollToBottom() {
+    scrollToForm() {
         setTimeout(() => {
-            if (this.content.scrollToBottom) {
-                this.content.scrollToBottom();
+            /*let f = document.getElementById('loginBox');
+            if (f) { 
+                this.content.scrollTo(0, f.offsetTop, 600)
+            }*/
+            if (this.content.scrollTo) { 
+                //let yOffset = document.getElementById('loginBox').offsetTop;
+                this.content.scrollTo(0, 86, 600)
             }
-        }, 500)
+        }, 100);
     }
 
     poweredBy() {

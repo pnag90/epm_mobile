@@ -24,10 +24,10 @@
 
 </ion-content>
 
-<ion-footer no-border>
+<ion-footer no-border *ngIf="isBoss">
     <button ion-item *ngIf="user">
       <ion-icon name="settings" item-left></ion-icon>
-      Editar Conta
+      {{ 'EDIT_ACCOUNT' | translate}}
     </button>
 </ion-footer>
 

@@ -7,6 +7,7 @@ import { AuthProvider } from './auth-provider';
 import { UtilsProvider } from './utils-provider';
 import { ConfProvider } from './conf-provider';
 import { UserProvider } from './user-provider';
+import { PATH } from './constants';
 import 'rxjs/add/operator/map';
 import * as io from 'socket.io-client';
 
@@ -41,7 +42,7 @@ export class SocketProvider {
     }
 
     private initSocket() : void {
-        this.socket = io.connect(this.confProvider.socket() + this.namespace, {'transports': ['websocket', 'polling', 'flashsocket']});
+        this.socket = io.connect(PATH.SOCKET + this.namespace, {'transports': ['websocket', 'polling', 'flashsocket']});
 
         this.socket.on("connect", () => {
             console.log("socket-connect");
@@ -93,8 +94,8 @@ export class SocketProvider {
         return false;
     }
 
-    private sendAuthSocket(epmSession: User): void {
-        console.debug('sendAuthSocket');
+    private sendAuthSocket(epmSession: any): void {
+        epmSession._mobile=true;
         this.socket.emit('authenticate', epmSession);
     }
 

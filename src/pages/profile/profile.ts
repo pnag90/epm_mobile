@@ -12,6 +12,7 @@ import { IonicPage } from 'ionic-angular';
 export class ProfilePage{
     private user: User;
     private defaultPic: string;
+    private isBoss: boolean=false;
 
     constructor(public auth: AuthProvider, public conf:ConfProvider) {
         this.defaultPic = this.conf.defaultUserPhoto();
@@ -19,7 +20,8 @@ export class ProfilePage{
 
     ionViewDidLoad() {
         if(this.auth.isLogged()){
-            this.user = this.auth.getUser();
+            this.user   = this.auth.getUser();
+            this.isBoss = this.auth.isBoss();
         }
     }
         

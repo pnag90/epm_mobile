@@ -55,6 +55,7 @@ page-worklist {
             max-height: 36px !important;
             width: auto !important;
             height: auto !important;
+            margin: auto;
         }
         
     }
@@ -80,7 +81,7 @@ page-worklist {
 
     @each $state, $color in $episode-states {
         ion-item.app-state-#{$state} ion-label {
-            border-left: 2px solid $color;
+            border-left: 3px solid $color;
             padding-left: 10px;
         }
     }

@@ -36,7 +36,7 @@ export class HomePage {
         if(this.auth.isLogged()){
             //this.socket.initialize();
             this.loadAlerts();
-            this.utils.showNotification('OLA','Teste');
+            //this.utils.showNotification('OLA','Teste');
         }
         this.worklistEpisodes = null;
     }

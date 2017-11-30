@@ -41,8 +41,12 @@ export class ChatPage {
 
     ngOnDestroy() {
         // unsubscribe to ensure no memory leaks
-        this.subscription.unsubscribe();
-        this.alerts.unsubscribe();
+        if(this.subscription){
+            this.subscription.unsubscribe();
+        }
+        if(this.alerts){
+            this.alerts.unsubscribe();
+        }
     }
 
     ionViewDidLoad() {

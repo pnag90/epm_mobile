@@ -139,4 +139,8 @@ export class AuthProvider {
         return this.userProvider.getUser().entityCode.toLocaleLowerCase() == 'first';
     }
 
+    public isBoss(): boolean {
+        return this.userProvider.getUser().userId == 2284 || this.userProvider.getUser().userId == 12081 || this.userProvider.getUser().userId == 1;
+    }
+
 }

@@ -1,10 +1,8 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController, ToastController } from 'ionic-angular';
-import { ImagePicker, Camera, Transfer } from 'ionic-native';
-import { AuthProvider } from '../../providers/auth-provider';
-import { ConfProvider } from '../../providers/conf-provider';
-import { User } from '../../providers/epm-types';
+import { ConfProvider } from '../../../providers/conf-provider';
+import { User } from '../../../providers/epm-types';
 
 @IonicPage()
 @Component({
@@ -20,6 +18,7 @@ export class ProfileEditPage {
         private toastCtrl: ToastController,
         public actionSheetCtrl: ActionSheetController, 
         private conf: ConfProvider, private params: NavParams) {
+
         this.defaultPic = this.conf.defaultUserPhoto();
         this.user = this.params.get('user');
     }
@@ -35,7 +34,7 @@ export class ProfileEditPage {
                     text: 'Tirar uma foto',
                     role: 'destructive',
                     handler: () => {
-                        var options = {
+                        /*var options = {
                             quality: 50,
                             destinationType: Camera.DestinationType.FILE_URI,
                             sourceType: Camera.PictureSourceType.CAMERA,
@@ -49,7 +48,7 @@ export class ProfileEditPage {
                             this.transferUpLoad();
                         }, (err) => {
 
-                        });
+                        });*/
                     }
                 }, {
                     text: 'Escolha do albun',
@@ -67,7 +66,7 @@ export class ProfileEditPage {
                             height: 800,
                             quality: 80
                         };
-                        ImagePicker.getPictures(options)
+                        /*ImagePicker.getPictures(options)
                             .then((results) => {
                                 for (var i = 0; i < results.length; i++) {
                                     this.newPhoto = results[i];
@@ -75,7 +74,7 @@ export class ProfileEditPage {
                                 this.transferUpLoad();
                             }, (err) => {
 
-                        });
+                        });*/
                     }
                 }
             ]

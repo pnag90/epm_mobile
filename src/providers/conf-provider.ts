@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpProvider } from './http-provider'; // import { Http } from '@angular/http';
+import { HttpProvider } from './http-provider';
 import { UtilsProvider } from './utils-provider';
 import { Episode } from './epm-types';
 
@@ -14,14 +14,6 @@ export class ConfProvider {
 
     public defaultUserPhoto(): string {
         return this.EPM_DEFAULT_USER_PIC;
-    }
-
-    public rest() {
-        return this.http.epmUrl();
-    }
-
-    public socket() {
-        return this.http.socketUrl();
     }
 
     public request(path: string, params: object = {}): Promise<any> {
