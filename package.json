@@ -1,7 +1,7 @@
 {
   "name": "epm_mobile",
   "author": "Pedro Goncalves <pnag90@gmail.com>",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "homepage": "http://epm.first-global.com/m",
   "description": "A mobile application for ePM",
   "private": true,

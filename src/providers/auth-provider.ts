@@ -57,9 +57,9 @@ export class AuthProvider {
         let accountPath = '/security/account?options';
         let authUrl = "/login/auth";
         console.log("auth:", username, password, institution);
-        authUrl += '?username=' + username;
-        authUrl += '&password=' + password;
-        authUrl += '&institutionCode=' + institution;
+        authUrl += '?username=' + username.trim();
+        authUrl += '&password=' + password.trim();
+        authUrl += '&institutionCode=' + institution.trim();
 
         return new Promise((resolve, reject) => {
             this.http.auth(authUrl).then(

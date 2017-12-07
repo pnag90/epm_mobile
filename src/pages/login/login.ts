@@ -29,7 +29,7 @@ export class LoginPage {
     login() {
         this.showLoading();
         this.auth.login(this.credentials).then((data) => {
-            console.log("on login",data);
+            //console.log("on login",data);
             if (data.isError) {
                 this.showError(data.error);
             } else {
@@ -67,12 +67,7 @@ export class LoginPage {
 
     scrollToForm() {
         setTimeout(() => {
-            /*let f = document.getElementById('loginBox');
-            if (f) { 
-                this.content.scrollTo(0, f.offsetTop, 600)
-            }*/
             if (this.content.scrollTo) { 
-                //let yOffset = document.getElementById('loginBox').offsetTop;
                 this.content.scrollTo(0, 86, 600)
             }
         }, 100);

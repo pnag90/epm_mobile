@@ -224,16 +224,18 @@ export class SocketProvider {
         }
     }
 
-    private notify(user:string, unread: number):void{
+    private notify(user:any, unread: number):void{
         if( this.notificationsActive==true ){
             let title = unread > 1 ? 'Nova mensagem' : unread + ' novas mensagens';
             let m = 'Recebeu uma nova mensagem';
-            if(user && user!=null && user!=''){
-                m += ' de ' + user + '.';
+            if(user && user.profName!=null && user.profName!=''){
+                m += ' de ' + user.profName + '.';
+            }
+            else if(user && user.userFullname!=null && user.userFullname!=''){
+                m += ' de ' + user.userFullname + '.';
             }else{
                 m += '.';
             }
-            console.log(title,m);
             this.utilsProvider.showNotification(title,m);
         }
     }
