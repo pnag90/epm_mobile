@@ -11,6 +11,7 @@
   "EFR": "Efr",
   "HISTORY": "Histórico",
   "BIRTH": "Data de Nascimento",
+  "PHOTO": "Foto",
   "USER": "Utilizador",
   "USER_OPTIONS": "Opções do Utilizador",
   "NOTIFICATIONS": "Notificações",
@@ -18,7 +19,7 @@
   "MESSAGES": "Mensagens",
   "BACKGROUND_RUN": "Correr em background",
   "ALL_EPISODES": "Todos",
-  "FUTURE_EPISODES" : "Futuras",
+  "FUTURE_EPISODES" : "Não realizadas",
   "APP_TYPE": "Tipo de episódio",
   "APP_MED_TYPE": "Tipo de episódio",
 

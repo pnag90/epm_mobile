@@ -30,8 +30,8 @@ export class EpisodePage {
             let str = this.episode.patientBirthdate;
             if(this.episode.patientAge){
                 let ageValue = this.episode.patientAge['value'] + "";
-                let ageUnit = this.episode.patientAge['unitLocale'] + "";
-                str += ' (' + ageValue + ' anos)';
+                let ageUnit = this.episode.patientAge['unitLocale'] || 'anos';
+                str += ' (' + ageValue + ' ' + ageUnit + ')';
             }
             this.birthString = str;
         }

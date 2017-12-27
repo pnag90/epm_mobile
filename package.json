@@ -32,6 +32,7 @@
     "@angular/platform-browser-dynamic": "4.4.4",
     "@angular/platform-server": "4.4.4",
     "@ionic-native/browser-tab": "^4.4.2",
+    "@ionic-native/camera": "^4.5.2",
     "@ionic-native/core": "^4.4.2",
     "@ionic-native/keyboard": "^4.4.2",
     "@ionic-native/local-notifications": "^4.4.2",
@@ -45,7 +46,10 @@
     "cordova-plugin-background-mode": "^0.7.2",
     "cordova-plugin-badge": "^0.8.5",
     "cordova-plugin-browsertab": "^0.2.0",
+    "cordova-plugin-camera": "^2.4.1",
+    "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-device": "^1.1.6",
+    "cordova-plugin-ionic-webview": "^1.1.11",
     "cordova-plugin-local-notification": "git+https://github.com/katzer/cordova-plugin-local-notifications.git",
     "cordova-plugin-network-information": "~1.3.2",
     "cordova-plugin-splashscreen": "^4.0.3",
@@ -64,8 +68,7 @@
     "socketio": "^1.0.0",
     "sw-toolbox": "3.6.0",
     "ts-md5": "^1.2.0",
-    "zone.js": "0.8.18",
-    "cordova-plugin-ionic-webview": "^1.1.11"
+    "zone.js": "0.8.18"
   },
   "devDependencies": {
     "@ionic/app-scripts": "^3.1.2",
@@ -87,7 +90,12 @@
       "de.appplant.cordova.plugin.local-notification": {},
       "cordova-plugin-background-mode": {},
       "cordova-sqlite-storage": {},
-      "cordova-plugin-ionic-webview": {}
+      "cordova-plugin-ionic-webview": {},
+      "cordova-plugin-compat": {},
+      "cordova-plugin-camera": {
+        "CAMERA_USAGE_DESCRIPTION": " ",
+        "PHOTOLIBRARY_USAGE_DESCRIPTION": " "
+      }
     },
     "platforms": [
       "android",

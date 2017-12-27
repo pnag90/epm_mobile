@@ -3,6 +3,7 @@ import { HttpModule, Http } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { BrowserTab } from '@ionic-native/browser-tab';
+import { Camera } from '@ionic-native/camera';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -55,6 +56,7 @@ export function createTranslateLoader(http: Http) {
     providers: [
         //BackgroundMode,
         BrowserTab,
+        Camera,
         StatusBar,
         SplashScreen,
         LocalNotifications,

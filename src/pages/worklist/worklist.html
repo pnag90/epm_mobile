@@ -1,11 +1,11 @@
 <ion-header>
     <ion-navbar no-border-bottom>
         <ion-segment [(ngModel)]="worklistFilter" (ionChange)="filterChanged()">
-            <ion-segment-button value="all">
-                {{'ALL_EPISODES' | translate }}
-            </ion-segment-button>
             <ion-segment-button value="future">
                 {{'FUTURE_EPISODES' | translate }}
+            </ion-segment-button>
+            <ion-segment-button value="all">
+                {{'ALL_EPISODES' | translate }}
             </ion-segment-button>
         </ion-segment>
 

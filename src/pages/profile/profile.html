@@ -5,7 +5,6 @@
         <img [src]="defaultPic" *ngIf="!user.photo" alt="" src="" class="head_img">
         <h4 class="user_text"><strong>{{user.userFullname}}</strong></h4>
     </div>
-
     
     <ion-item *ngIf="user">
         <ion-label stacked>{{ 'NAME' | translate}}</ion-label>
@@ -25,7 +24,7 @@
 </ion-content>
 
 <ion-footer no-border *ngIf="isBoss">
-    <button ion-item *ngIf="user">
+    <button ion-item *ngIf="user" (click)="profileForm()">
       <ion-icon name="settings" item-left></ion-icon>
       {{ 'EDIT_ACCOUNT' | translate}}
     </button>

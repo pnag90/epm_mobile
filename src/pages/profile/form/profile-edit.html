@@ -1,5 +1,35 @@
+<ion-header>
+    <ion-navbar color="secondary">
+        <ion-title> {{ 'EDIT_ACCOUNT' | translate}}</ion-title>
+
+        <ion-buttons end>
+            <button ion-button icon-only (click)="save()">
+                <ion-icon name="checkmark-circle"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
 <ion-content>
-   Edit
+    <!--<div *ngIf="!user" class="spinner-container">
+        <ion-spinner></ion-spinner>
+    </div>-->
+    
+    <div class="item-fc" *ngIf="user">
+        <ion-label color="primary" stacked>{{ 'PHOTO' | translate}}</ion-label>
+        <img [src]="user.photo | safe: 'url'" *ngIf="user.photo" alt="" src="" class="head_img" (click)="choseUserHeadImg()">
+        <img [src]="defaultPic" *ngIf="!user.photo" alt="" src="" class="head_img"  (click)="choseUserHeadImg()">
+    </div>
+
+    <ion-item *ngIf="user">
+        <ion-label color="primary" stacked>{{ 'NAME' | translate}}</ion-label>
+        <ion-input [(ngModel)]="user.userFullname"></ion-input>
+    </ion-item>
+
+    <ion-item *ngIf="user">
+        <ion-label color="primary" stacked>{{ 'EMAIL' | translate}}</ion-label>
+        <ion-input type="email" [(ngModel)]="user.email"></ion-input>
+    </ion-item>
 
 </ion-content>
 

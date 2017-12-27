@@ -86,11 +86,11 @@ export class MessagesPage {
     this.chatBox = "";
   }
 
-  onFocus() {
+  /*onFocus() {
     this.showEmojiPicker = false;
     this.content.resize();
     this.scrollToBottom();
-  }
+  }*/
 
   scrollToBottom() {
     setTimeout(() => {
@@ -100,13 +100,20 @@ export class MessagesPage {
     }, 400)
   }
 
-  switchEmojiPicker() {
+  /*switchEmojiPicker() {
     this.showEmojiPicker = !this.showEmojiPicker;
     if (!this.showEmojiPicker) {
       this.messageInput.setFocus();
     }
     this.content.resize();
     this.scrollToBottom();
+  }*/
+
+  ionViewLoaded() {
+    setTimeout(() => {
+      //Keyboard.show() // for android
+      this.messageInput.setFocus();
+    },150); //a least 150ms.
   }
 
   ionViewWillUnload() {

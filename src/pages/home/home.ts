@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, Tabs } from 'ionic-angular';
+import { IonicPage, NavController, LoadingController, Loading, Tabs } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth-provider';
 import { SocketProvider } from '../../providers/socket-provider';
 import { Subscription } from 'rxjs/Subscription';
@@ -12,7 +12,7 @@ import { UserProvider } from '../../providers/user-provider';
     templateUrl: 'home.html'
 })
 export class HomePage {
-    
+    loading: Loading;
     @ViewChild('mainTabs') tabs: Tabs;
     private chatPage: any = 'ChatPage';
     private profilePage: any = 'ProfilePage';
@@ -28,7 +28,8 @@ export class HomePage {
                 public auth: AuthProvider, 
                 public socket: SocketProvider,
                 public utils: UtilsProvider,
-                public user: UserProvider) {
+                public user: UserProvider,
+                private loadingCtrl: LoadingController) {
         
     }
 
@@ -53,13 +54,22 @@ export class HomePage {
     }
 
     public logout() {
+        this.showLoading();
         this.auth.logout().then(res => {
             this.socket.disconnect();
             this.user.setUser(null);
+            this.loading.dismiss();
             this.nav.setRoot('LoginPage');
         }, err => {
-            
+            this.loading.dismiss();
         });
+    }
+
+    showLoading() {
+        this.loading = this.loadingCtrl.create({
+            content: 'A sair...'
+        });
+        this.loading.present();
     }
 
     ionViewWillUnload () {

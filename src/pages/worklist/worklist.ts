@@ -32,7 +32,7 @@ export class WorklistPage {
     private searchKey: string = null;
     private currentDate: string;
     private worklistDate: string = '';
-    private worklistFilter: string = 'all';
+    private worklistFilter: string = 'future';
 
     constructor(public auth: AuthProvider,
         public conf: ConfProvider,

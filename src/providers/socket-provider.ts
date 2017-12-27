@@ -19,8 +19,7 @@ export class SocketProvider {
     /* events */
     public EVENT_MESSAGE :string             = 'epm:chat:message';
     public EVENT_MESSAGE_SENT :string        = 'epm:chat:message:sent';
-    public EVENT_MESSAGE_NEW :string         = 'epm:chat:message:new';
-    public EVENT_USER_STATUS_CHANGED :string = 'epm:chat:users:update';
+    public EVENT_MESSAGE_READ :string        = 'epm:chat:message:read';
     public EVENT_TYPING :string              = 'epm:chat:typing';
 
     /* chat vars */
@@ -42,7 +41,7 @@ export class SocketProvider {
     }
 
     private initSocket() : void {
-        this.socket = io.connect(PATH.SOCKET + this.namespace, {'transports': ['websocket', 'polling', 'flashsocket']});
+        this.socket = io.connect(PATH.SOCKET + this.namespace, {'transports': ['websocket']});
 
         this.socket.on("connect", () => {
             console.log("socket-connect");
@@ -100,22 +99,25 @@ export class SocketProvider {
     }
 
     private initializeChat(ioSession?:any) : void{
-
+        let userEvent =  ':' + this.session.userId;
         // messages
-        this.socket.on(this.EVENT_MESSAGE_SENT, (dta) => { this.newChatMessage(dta,true); });
-        this.socket.on(this.EVENT_MESSAGE + ':' + this.session.userId, (dta) => { this.newChatMessage(dta,false); });
+        this.socket.on(this.EVENT_MESSAGE_SENT + userEvent, (dta) => { this.newChatMessage(dta,true); });
+        this.socket.on(this.EVENT_MESSAGE + userEvent, (dta) => { this.newChatMessage(dta,false); });
+        this.socket.on(this.EVENT_MESSAGE_READ + userEvent, this.readChatMessage);
+        //this.socket.on(this.EVENT_TYPING + userEvent, (dta) => { this.typingChatMessage(dta,false); });
 
         if(ioSession){ 
             this.getChatUsers(ioSession.online);
+            this.updateAlertsAll(ioSession.chat);
         }
         
-        this.storage.get('epmChatMessages').then((val) => {
+        /*this.storage.get('epmChatMessages').then((val) => {
             if(val !== undefined && val !== null){
                 this.chatMessagesData = val || {};
                 this.chatMessages.next(this.chatMessagesData); 
                 this.updateAlerts();
             }
-        });
+        });*/
 
         this.notificationsActive = true;
         if(this.session && this.session.options){
@@ -198,12 +200,21 @@ export class SocketProvider {
         if(this.chatMessagesData[userId]==undefined || this.chatMessagesData[userId]==null){
             this.chatMessagesData[userId] = [];
         }else{
+            let msgIds = [];
             for(var i=0; i<this.chatMessagesData[userId].length; i++){
-                this.chatMessagesData[userId][i].readed=true;
+                //this.chatMessagesData[userId][i].readed=true;
+                if(userId==this.chatMessagesData[userId].senderId && !this.chatMessagesData[userId].readed){
+                    msgIds.push(this.chatMessagesData[userId].id);
+                }
+            }
+            if(msgIds.length>0){
+                this.socket.emit(this.EVENT_MESSAGE_READ,{
+                    senderId: userId,
+                    messages: msgIds
+                });
             }
         }
-        //this.storage.set('epmChatMessages',this.chatMessagesData);
-        this.refreshAlerts(userId, new Date(), 0);
+        //this.refreshAlerts(userId, new Date(), 0);
     }
 
     private updateAlerts():void{
@@ -222,6 +233,44 @@ export class SocketProvider {
             }
             this.chatAlerts.next(unread);
         }
+    }
+
+    private updateAlertsAll(chatHistory):void{
+        let totalAlerts = 0;
+        let myId = this.session.userId +'';
+
+        this.chatMessagesData = {};
+        for (var i=0; i<this.chatUsersArray.length; i++){
+            var uId = this.chatUsersArray[i].userId + '';
+            var unread = 0;
+            if(uId != myId){
+                if(chatHistory[uId]){
+                    this.chatMessagesData[uId] = chatHistory[uId].messages = [];
+                    for (var k=0; k<this.chatMessagesData[uId].length; k++){
+                        let m = this.chatMessagesData[uId][k];
+                        this.chatMessagesData[uId][k].messages = [m.message];
+
+                        if (uId == m.senderId){
+                            //this.chatMessagesData[uId][k].senderFullname = chat.users[i].userName || chat.users[i].profName;
+                            if(!m.readed) {
+                                unread++;
+                            }
+                        }else{
+                            //this.chatMessagesData[uId][k].senderFullname = session.userFullname || session.userFullName;
+                        }
+                    }
+                    if(chatHistory[uId].lastActivity){
+                        this.chatUsersArray[i].lastActivity = chatHistory[uId].lastActivity || this.chatUsersArray[i].lastActivity;
+                    }
+                }else{
+                    this.chatMessagesData[uId] = [];
+                }
+            }
+            this.chatUsersArray[i].alerts = unread;
+            totalAlerts += unread;
+        }
+        this.chatMessages.next(this.chatMessagesData);         
+        this.chatAlerts.next(totalAlerts);
     }
 
     private notify(user:any, unread: number):void{
@@ -245,9 +294,8 @@ export class SocketProvider {
     }
 
     private newChatMessage(data:any,isMine:boolean){
-        if (data && data.sender && data.messages) {
-            let senderId  = data.sender.userId + '';
-            let senderName  = data.sender.userFullName + '';
+        if (data && data.senderId) {
+            let senderId  = data.senderId + '';
             let receiptId = data.receipt + '';
 
             let userIdx = isMine ? receiptId : senderId;
@@ -258,24 +306,35 @@ export class SocketProvider {
                 this.chatMessagesData[userIdx] = [];
             }
 
+            // set sender name
+            if(isMine) {
+                data.senderFullname = this.session.userFullname;
+            } else {
+                data.senderFullname = null;
+            }
+
             // check last message time and user
             if (this.chatMessagesData[userIdx].length > 0) {
 
                 var lastIndex       = this.chatMessagesData[userIdx].length - 1;
                 var lastTimeStamp   = this.chatMessagesData[userIdx][lastIndex].timestamp;
-                var lastUser        = this.chatMessagesData[userIdx][lastIndex].sender.userId;
+                var lastUser        = this.chatMessagesData[userIdx][lastIndex].senderId;
 
-                if ( this.utilsProvider.isSameTime(lastTimeStamp,data.timestamp) && lastUser == senderId){
+                /*if ( false && this.utilsProvider.isSameTime(lastTimeStamp,data.timestamp) && lastUser == senderId){
                     this.chatMessagesData[userIdx][lastIndex].timestamp = data.timestamp;
-                    this.chatMessagesData[userIdx][lastIndex].messages  = this.chatMessagesData[userIdx][lastIndex].messages.concat(data.messages);
-                    this.chatMessagesData[userIdx][lastIndex].readed = isMine;
+                    this.chatMessagesData[userIdx][lastIndex].messages  = this.chatMessagesData[userIdx][lastIndex].messages.concat([data.message]);
+                    //this.chatMessagesData[userIdx][lastIndex].readed = isMine;
                 }else{
-                    data.readed = isMine;
+                    //data.readed = isMine;
+                    data.messages = [data.message];
                     this.chatMessagesData[userIdx].push(data);
-                }
+                }*/
+                data.messages = [data.message];
+                this.chatMessagesData[userIdx].push(data);
 
             }else{
-                data.readed = isMine;
+                //data.readed = isMine;
+                data.messages = [data.message];
                 this.chatMessagesData[userIdx].push(data);
             }
 
@@ -290,10 +349,33 @@ export class SocketProvider {
         }
     }
 
+    private readChatMessage(data):void {
+        if(data){
+            let unread=0;
+            this.chatMessagesData[data.senderId].forEach(function (m,i) {
+                if(data.messageIds.indexOf(m.id) > -1){
+                    m.readed = data.timestamp;
+                }
+                if(data.senderId==m.senderId && !m.readed){
+                    unread++;
+                }
+            });
+            this.chatMessages.next(this.chatMessagesData);
+            this.refreshAlerts(data.senderId,data.timestamp,unread);
+        }
+    }
+
     private refreshActivity(uId,timestamp) {
         let unread = 0;
+        uId = uId  + '';
         for(let i=0; i<this.chatMessagesData[uId].length; i++){
-            if(this.chatMessagesData[uId][i].readed==false){ unread++; }
+            /*
+            if(this.chatMessagesData[uId][i].readed==false){ 
+                unread++; 
+            }*/
+            if(uId==this.chatMessagesData[uId][i].senderId && !this.chatMessagesData[uId][i].readed){
+                unread++;
+            }
         }
         this.refreshAlerts(uId,timestamp,unread);
     }

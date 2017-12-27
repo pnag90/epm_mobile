@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthProvider } from '../../providers/auth-provider';
 import { User } from '../../providers/epm-types';
 import { IonicPage } from 'ionic-angular';
+import { NavController } from 'ionic-angular/navigation/nav-controller';
 
 @IonicPage()
 @Component({
@@ -10,11 +11,11 @@ import { IonicPage } from 'ionic-angular';
     templateUrl: 'profile.html'
 })
 export class ProfilePage{
-    private user: User;
+    private user: User = null;
     private defaultPic: string;
-    private isBoss: boolean=false;
+    private isBoss: boolean = false;
 
-    constructor(public auth: AuthProvider, public conf:ConfProvider) {
+    constructor(public auth: AuthProvider, public conf:ConfProvider, private navCtrl:NavController) {
         this.defaultPic = this.conf.defaultUserPhoto();
     }
 
@@ -22,6 +23,13 @@ export class ProfilePage{
         if(this.auth.isLogged()){
             this.user   = this.auth.getUser();
             this.isBoss = this.auth.isBoss();
+        }
+    }
+
+
+    profileForm(): void{
+        if(this.user != null){
+            this.navCtrl.push('ProfileEditPage', { user: this.user });
         }
     }
         

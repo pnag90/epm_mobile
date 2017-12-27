@@ -10,13 +10,13 @@
   </div>
 
   <div class="chat-box" *ngIf="userMessages && chatUser">
-    <div *ngFor="let msg of userMessages" class="message" [class.left]="msg.sender.userId==chatUser.userId" [class.right]="msg.sender.userId==user.userId">
+    <div *ngFor="let msg of userMessages" class="message" [class.left]="msg.senderId==chatUser.userId" [class.right]="msg.senderId==user.userId">
 
-      <img [src]="chatUser.photo | safe: 'url'" class="user-img" alt="" src="" *ngIf="msg.sender.userId==chatUser.userId && chatUser.photo"/>
-      <img [src]="userPic" class="user-img" alt="" src="" *ngIf="msg.sender.userId==chatUser.userId && !chatUser.photo"/>
+      <img [src]="chatUser.photo | safe: 'url'" class="user-img" alt="" src="" *ngIf="msg.senderId==chatUser.userId && chatUser.photo"/>
+      <img [src]="userPic" class="user-img" alt="" src="" *ngIf="msg.senderId==chatUser.userId && !chatUser.photo"/>
 
-      <img [src]="user.photo | safe: 'url'" class="user-img" alt="" src="" *ngIf="msg.sender.userId==user.userId && user.photo"/>
-      <img [src]="userPic" class="user-img" alt="" src="" *ngIf="msg.sender.userId==user.userId && !user.photo"/>
+      <img [src]="user.photo | safe: 'url'" class="user-img" alt="" src="" *ngIf="msg.senderId==user.userId && user.photo"/>
+      <img [src]="userPic" class="user-img" alt="" src="" *ngIf="msg.senderId==user.userId && !user.photo"/>
 
       <div class="msg-detail">
         <div class="msg-info">
@@ -35,32 +35,24 @@
 <ion-footer no-border>
   <ion-grid class="input-wrap" *ngIf="chatUser">
     <ion-row>
-      <!--
-      <ion-col col-2>
-        <button ion-button clear icon-only item-right (click)="switchEmojiPicker()">
-          <ion-icon name="md-happy"></ion-icon>
-        </button>
-      </ion-col>
-    -->
-
       <ion-col col-10>
-        <ion-textarea #chat_input placeholder="..." [(ngModel)]="chatBox" (keyup.enter)="send()" (focus)="onFocus()" [disabled]="chatUser.state!='online'">
+        <ion-textarea #chat_input placeholder="..." [(ngModel)]="chatBox" (keyup.enter)="send()" (focus)="onFocus()">
         </ion-textarea>
       </ion-col>
 
       <ion-col col-2>
-        <button ion-button clear icon-only item-right (click)="sendMsg()" [disabled]="chatUser.state!='online'">
+        <!--  [disabled]="chatUser.state!='online'" -->
+        <button ion-button clear icon-only item-right (click)="sendMsg()">
           <ion-icon name="ios-send" ios="ios-send" md="md-send"></ion-icon>
         </button>
       </ion-col>
     </ion-row>
   </ion-grid>
-  <!--<emoji-picker *ngIf="showEmojiPicker" [(ngModel)]="chatBox"></emoji-picker>-->
 
   <form [formGroup]="messageForm" (submit)="send(chatBox)" novalidate>
     <ion-item>
       <ion-input formControlName="message" [(ngModel)]="chatBox"></ion-input>
-      <button ion-button clear (click)="send(chatBox)" item-right [disabled]="chatUser.state!='online'">
+      <button ion-button clear (click)="send(chatBox)" item-right>
         {{ 'SEND' | translate}}
         <ion-icon class="footer-btn" name="send" style="padding-left: 5px;"></ion-icon>
       </button>
