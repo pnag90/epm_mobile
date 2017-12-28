@@ -74,8 +74,8 @@ export class MessagesPage {
 
       setTimeout(() => {
         this.content.scrollToBottom();
-      }, 5);
-    }, 500);
+      }, 100);
+    }, 300);
   }
 
   sendMsg() {

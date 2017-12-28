@@ -1,3 +1,4 @@
+import { cacheLoader } from '@ionic/app-scripts/dist/webpack/cache-loader-impl';
 
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController, ToastController } from 'ionic-angular';
@@ -24,14 +25,6 @@ export class ProfileEditPage {
 
         this.defaultPic = this.conf.defaultUserPhoto();
         this.user = this.params.get('user');
-
-        
-    }
-
-    save() {
-        if (this.user != null && this.user.userId!=null){
-            this.goBack();
-        }
     }
 
     choseUserHeadImg() {
@@ -84,7 +77,7 @@ export class ProfileEditPage {
                         
                         const cameraOptions: CameraOptions = {
                             quality: 100,
-                            destinationType: camera.DestinationType.DATA_URL,     //this.camera.DestinationType.FILE_URI
+                            destinationType: camera.DestinationType.DATA_URL,     //    FILE_URI    DATA_URL
                             encodingType: camera.EncodingType.PNG,
                             sourceType: camera.PictureSourceType.PHOTOLIBRARY,
                             correctOrientation: true,
@@ -107,21 +100,25 @@ export class ProfileEditPage {
     capture(imageData) {
         // imageData is either a base64 encoded string or a file URI
         // If it's base64:
-        this.newPhoto = 'data:image/jpeg;base64,' + imageData;
-        this.user.photo = imageData;
+        console.log('new img', imageData);
+       // this.newPhoto = 
+        this.user.photo = 'data:image/png;base64,' + imageData;
     }
 
-    transferUpLoad() {
+    save() {
         // set image on bd
+        if (this.user != null && this.user.userId!=null){
+           
+            // reload user
+            let toast = this.toastCtrl.create({
+                message: 'Perfil atualizado',
+                duration: 2000,
+                position: 'bottom'
+            });
+            toast.present();
 
-        // reload user
-        let toast = this.toastCtrl.create({
-            message: 'Foto atualizada',
-            duration: 2000,
-            position: 'bottom'
-        });
-        toast.present();
-
+            this.goBack();
+        }
     }
 
     ionViewDidLoad() {
