@@ -1,5 +1,3 @@
-import { cacheLoader } from '@ionic/app-scripts/dist/webpack/cache-loader-impl';
-
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController, ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
@@ -16,10 +14,10 @@ export class ProfileEditPage {
     private defaultPic: string;
     private newPhoto;
 
-    constructor(private nav: NavController, 
+    constructor(private nav: NavController,
         private toastCtrl: ToastController,
-        public actionSheetCtrl: ActionSheetController, 
-        private conf: ConfProvider, 
+        public actionSheetCtrl: ActionSheetController,
+        private conf: ConfProvider,
         private params: NavParams,
         public camera: Camera) {
 
@@ -31,9 +29,6 @@ export class ProfileEditPage {
         this.presentActionSheet();
     }
     presentActionSheet() {
-        let camera = this.camera;
-        let cameraCallback = this.capture;
-
         let actionSheet = this.actionSheetCtrl.create({
             title: "Imagem Utilizador",
             buttons: [
@@ -41,21 +36,7 @@ export class ProfileEditPage {
                     text: 'Tirar uma foto',
                     role: 'destructive',
                     handler: () => {
-                         //setup camera options
-                         const cameraOptions: CameraOptions = {
-                            quality: 100,
-                            destinationType: camera.DestinationType.DATA_URL,     //this.camera.DestinationType.FILE_URI
-                            encodingType: camera.EncodingType.PNG,
-                            mediaType: camera.MediaType.PICTURE,
-                            sourceType: camera.PictureSourceType.CAMERA,
-                            correctOrientation: true
-                        };
-                        camera.getPicture(cameraOptions).then((imageData) => {
-                            cameraCallback(imageData);
-                          }, (err) => {
-                            // Handle error
-                            console.log('CAMERA ERROR',err);
-                          });
+                        this.takePicture();
                     }
                 }, {
                     text: 'Escolha do album',
@@ -65,31 +46,9 @@ export class ProfileEditPage {
                             duration: 2000,
                             position: 'bottom'
                         });
-                        toast.present();
-
-                        let options = {
-                            maximumImagesCount: 1,
-                            width: 800,
-                            height: 800,
-                            quality: 80
-                        };
-                         //setup camera options
                         
-                        const cameraOptions: CameraOptions = {
-                            quality: 100,
-                            destinationType: camera.DestinationType.DATA_URL,     //    FILE_URI    DATA_URL
-                            encodingType: camera.EncodingType.PNG,
-                            sourceType: camera.PictureSourceType.PHOTOLIBRARY,
-                            correctOrientation: true,
-                            targetWidth: 500,
-                            targetHeight: 500,
-                        };
-                        camera.getPicture(cameraOptions).then((imageData) => {
-                            cameraCallback(imageData);
-                          }, (err) => {
-                            // Handle error
-                            console.log('CAMERA ERROR',err);
-                          });
+                        this.uploadPicture();
+                        toast.present();
                     }
                 }
             ]
@@ -97,18 +56,77 @@ export class ProfileEditPage {
         actionSheet.present();
     }
 
+    private takePicture() {
+        //setup camera options
+        const cameraOptions: CameraOptions = {
+            quality: 50,
+            destinationType: this.camera.DestinationType.DATA_URL,     //this.camera.DestinationType.FILE_URI
+            encodingType: this.camera.EncodingType.JPEG,
+            mediaType: this.camera.MediaType.PICTURE,
+            sourceType: this.camera.PictureSourceType.CAMERA,
+            correctOrientation: true,   //Corrects Android orientation quirks
+            allowEdit: false,
+            targetWidth: 150,
+            targetHeight: 150,
+            cameraDirection: this.camera.Direction.FRONT,
+            saveToPhotoAlbum: false
+        };
+        this.camera.getPicture(cameraOptions).then((imageData) => {
+            console.log('new img', imageData);
+            this.user.photo = 'data:image/png;base64,' + imageData;
+        }, (err) => {
+            // Handle error
+            console.log('CAMERA ERROR', err);
+        });
+    }
+
+    private uploadPicture() {
+        let toast = this.toastCtrl.create({
+            message: 'Abrir album',
+            duration: 2000,
+            position: 'bottom'
+        });
+        toast.present();
+
+        let options = {
+            maximumImagesCount: 1,
+            width: 400,
+            height: 400,
+            quality: 80
+        };
+        //setup camera options
+
+        const cameraOptions: CameraOptions = {
+            quality: 70,
+            destinationType: this.camera.DestinationType.DATA_URL,     //    FILE_URI    DATA_URL
+            encodingType: this.camera.EncodingType.PNG,
+            sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+            allowEdit: false, 
+            correctOrientation: true,
+            targetWidth: 200,
+            targetHeight: 200,
+        };
+        this.camera.getPicture(cameraOptions).then((imageData) => {
+            console.log('new img', imageData);
+            this.user.photo = 'data:image/png;base64,' + imageData;
+        }, (err) => {
+            // Handle error
+            console.log('CAMERA ERROR', err);
+        });
+    }
+
     capture(imageData) {
         // imageData is either a base64 encoded string or a file URI
         // If it's base64:
         console.log('new img', imageData);
-       // this.newPhoto = 
+        // this.newPhoto = 
         this.user.photo = 'data:image/png;base64,' + imageData;
     }
 
     save() {
         // set image on bd
-        if (this.user != null && this.user.userId!=null){
-           
+        if (this.user != null && this.user.userId != null) {
+
             // reload user
             let toast = this.toastCtrl.create({
                 message: 'Perfil atualizado',
