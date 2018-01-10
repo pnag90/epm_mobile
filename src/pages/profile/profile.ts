@@ -4,6 +4,7 @@ import { AuthProvider } from '../../providers/auth-provider';
 import { User } from '../../providers/epm-types';
 import { IonicPage } from 'ionic-angular';
 import { NavController } from 'ionic-angular/navigation/nav-controller';
+import { ProfileEditPage } from './form/profile-edit';
 
 @IonicPage()
 @Component({
@@ -29,7 +30,7 @@ export class ProfilePage{
 
     profileForm(): void{
         if(this.user != null){
-            this.navCtrl.push('ProfileEditPage', { user: this.user });
+            this.navCtrl.push(ProfileEditPage, { user: this.user });
         }
     }
         

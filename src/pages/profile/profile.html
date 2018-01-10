@@ -1,8 +1,10 @@
 <ion-content>
     <div id="frist_div" style="width: 100% ;height: 40%;" *ngIf="user">
         <img src="assets/img/hospital-bg.jpg" style="width: 100% ;height: 100%">
-        <img [src]="user.photo | safe: 'url'" *ngIf="user.photo" alt="" src="" class="head_img">
-        <img [src]="defaultPic" *ngIf="!user.photo" alt="" src="" class="head_img">
+        <div class="head_img">
+            <img [src]="user.photo | safe: 'url'" *ngIf="user.photo" alt="" src="" class="head_img">
+            <img [src]="defaultPic" *ngIf="!user.photo" alt="" src="" class="head_img">
+        </div>
         <h4 class="user_text"><strong>{{user.userFullname}}</strong></h4>
     </div>
     
