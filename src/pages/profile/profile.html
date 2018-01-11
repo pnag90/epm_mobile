@@ -1,21 +1,27 @@
 <ion-content>
     <div id="frist_div" style="width: 100% ;height: 40%;" *ngIf="user">
         <img src="assets/img/hospital-bg.jpg" style="width: 100% ;height: 100%">
-        <div class="head_img">
+        <div class="head_content">
             <img [src]="user.photo | safe: 'url'" *ngIf="user.photo" alt="" src="" class="head_img">
             <img [src]="defaultPic" *ngIf="!user.photo" alt="" src="" class="head_img">
+
+            <h4 class="user_text"><strong>{{user.userFullname}}</strong></h4>
         </div>
-        <h4 class="user_text"><strong>{{user.userFullname}}</strong></h4>
     </div>
     
     <ion-item *ngIf="user">
         <ion-label stacked>{{ 'NAME' | translate}}</ion-label>
-        <ion-input [(ngModel)]="user.userFullname" readonly></ion-input>
+        <ion-input [ngModel]="user.userFullname" readonly></ion-input>
     </ion-item>
 
     <ion-item *ngIf="user">
         <ion-label stacked>{{ 'EMAIL' | translate}}</ion-label>
-        <ion-input type="email" [(ngModel)]="user.email" readonly></ion-input>
+        <ion-input type="email" [ngModel]="user.email" readonly></ion-input>
+    </ion-item>
+
+    <ion-item *ngIf="user">
+        <ion-label stacked>{{ 'PROF_GROUP_LABEL' | translate}}</ion-label>
+        <ion-input type="email" [ngModel]="userProfGroup" readonly></ion-input>
     </ion-item>
 
     <ion-item *ngIf="user">
