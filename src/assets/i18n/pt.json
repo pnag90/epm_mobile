@@ -25,6 +25,23 @@
 
   "EDIT_ACCOUNT": "Editar Conta",
 
+  "PROF_GROUP_LABEL": "Grupo Profissional", 
+  "PROF_GROUP": {
+    "01": "Administrativo",
+    "0101":	"Secretária",
+    "02":	"Quadros Superiores / Quadros Técnicos",
+    "03":	"Técnico de Saúde",
+    "0302":	"Farmacêutico",
+    "0303":	"Psicólogo",
+    "0314":	"Ortoptista",
+    "0316":	"Radiologia",
+    "0329":	"Auxiliar de Acção Médica",
+    "04":	"Enfermeiro",
+    "05": "Médico",
+    "06":	"Técnico Superiore Saúde",
+    "07":	"Médico Dentista"
+  },
+
   "BACK_BUTTON_TEXT": "",
   "DONE": "Selecionar",
   "CANCEL": "Cancelar",

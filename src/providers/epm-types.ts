@@ -24,6 +24,8 @@ export class User {
     username: string;
     userFullname: string;
     userEmail: string;
+    profGroup: string;
+    profFunction: string;
     languageCode: string;
     photo: string;
     permissions: Array<UserOption>;

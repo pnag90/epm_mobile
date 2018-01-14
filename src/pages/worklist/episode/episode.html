@@ -17,7 +17,7 @@
         <div *ngSwitchCase="'episode'">
             <ion-item>
                 <ion-avatar class="user-photo">
-                    <img [src]="'data:image/jpeg;base64,'+episode.patientPhoto | safe: 'url'" *ngIf="episode.patientPhoto">
+                    <img [src]="'data:image/img;base64,'+episode.patientPhoto | safe: 'url'" *ngIf="episode.patientPhoto">
                     <img [src]="defaultPic" *ngIf="!episode.patientPhoto">
                 </ion-avatar>
             </ion-item>

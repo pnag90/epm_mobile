@@ -22,6 +22,8 @@ export class UserProvider {
                 username: session.username,
                 userFullname: session.userFullname,
                 userEmail: session.userEmail,
+                profGroup: session.coworkerGroup,
+                profFunction: session.coworkerFunction,
                 languageCode: session.languageCode,
                 photo: this.getPhoto(session.photo),
                 permissions: session.permissions,
@@ -40,10 +42,10 @@ export class UserProvider {
         if(!img || img==''){
             return null;
         }
-        if(img.indexOf('data:image/jpeg;base64') > -1){
+        if(img.indexOf('data:image/') !== -1){
             return img;
         }
-        return 'data:image/jpeg;base64,' + img;
+        return 'data:image/img;base64,' + img;
     }
 
     public isLogged() : boolean {

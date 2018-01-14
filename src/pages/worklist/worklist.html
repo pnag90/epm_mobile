@@ -62,7 +62,7 @@
 
             <button ion-item (click)="openEpisode(episode)">
                 <ion-avatar item-left>
-                    <img [src]="('data:image/jpeg;base64,' + episode.patientPhoto) | safe: 'url'" class="profile-pic" *ngIf="episode.patientPhoto"/>
+                    <img [src]="('data:image/img;base64,' + episode.patientPhoto) | safe: 'url'" class="profile-pic" *ngIf="episode.patientPhoto"/>
                     <img [src]="defaultPic" *ngIf="!episode.patientPhoto"/>
                 </ion-avatar>
                 <h3>{{ episode.scheduledStartDateTime }}</h3>
