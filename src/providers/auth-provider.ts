@@ -71,7 +71,7 @@ export class AuthProvider {
                                 console.error('Invalid user credentials');
                                 reject('Credênciais inválidas.');
                             } else if (err.status !== 200) {
-                                console.error('HTTP Error', err);
+                                console.error('HTTP Error',accountPath,JSON.stringify(err));
                                 reject('Falha no pedido.');
                             }
                         }
@@ -82,7 +82,7 @@ export class AuthProvider {
                         console.error('Invalid user credentials');
                         reject('Credênciais inválidas.');
                     } else if (error.status !== 200) {
-                        console.error('HTTP Error', error);
+                        console.error('HTTP Error',authUrl, JSON.stringify(error));
                         reject('Falha no pedido.');
                     }
                 }

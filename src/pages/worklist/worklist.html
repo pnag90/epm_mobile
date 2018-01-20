@@ -39,33 +39,16 @@
     <div *ngIf="loading" class="spinner-container">
         <ion-spinner></ion-spinner>
     </div>
-    <!--
-    <ion-item>
-        <ion-label>{{ 'DATE' | translate }}</ion-label>
-        <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" [(ngModel)]="currentDate" (ionChange)="dateChanged()"
-            yearValues="2017" [doneText]="translate.instant('DONE')" [cancelText]="translate.instant('CANCEL')">
-        </ion-datetime>
-    </ion-item>-->
+
     <ion-list #appointmentList>
         <ion-item #appointmentItem *ngFor="let episode of episodes" [ngClass]="'app-state-'+ episode.color">
-            <!--(click)="openEpisode(episode)" 
-                
-                <ion-avatar item-left>
-                <img [src]="'data:image/jpeg;base64,' + episode.patientPhoto" class="profile-pic" *ngIf="episode.patientPhoto"
-                />
-                <img [src]="defaultPic" *ngIf="!episode.patientPhoto">
-            </ion-avatar>
-            <div class="app-state" [ngClass]="episode.colorState"></div>
-            <h2> {{ episode.scheduledStartDateTime }} </h2>
-            <h3> {{ episode.patientName }}, {{ episode.patientAge }} anos </h3>
-            <p> {{ episode.areaCode }} - {{ episode.serviceName }} </p>-->
 
             <button ion-item (click)="openEpisode(episode)">
                 <ion-avatar item-left>
                     <img [src]="('data:image/img;base64,' + episode.patientPhoto) | safe: 'url'" class="profile-pic" *ngIf="episode.patientPhoto"/>
                     <img [src]="defaultPic" *ngIf="!episode.patientPhoto"/>
                 </ion-avatar>
-                <h3>{{ episode.scheduledStartDateTime }}</h3>
+                <h3>{{ episode.scheduledStartTime }}</h3>
                 <p>{{ episode.patientName }} <span *ngIf="episode.patientAge"> , {{ episode.patientAge.value }} {{ episode.patientAge.unitLocale | translate }} </span></p>
                 <p>{{ episode.areaCode }} &mdash; {{ episode.serviceName }}</p>
             </button>
