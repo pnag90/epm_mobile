@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="pt.firt.epm.mobile" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="pt.first.epm.mobile" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>ePM Mobile</name>
     <description>ePM Clinics mobile application.</description>
     <author email="pedro.goncalves@first-global.com" href="">Pedro Gonçalves</author>
@@ -95,5 +95,5 @@
     <plugin name="cordova-plugin-statusbar" spec="^2.4.1" />
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.1" />
     <engine name="android" spec="6.3.0" />
-    <engine name="ios" spec="4.5.2" />
+    <engine name="ios" spec="4.5.4" />
 </widget>
