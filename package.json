@@ -77,7 +77,7 @@
     "@ionic/app-scripts": "^3.1.2",
     "@types/lodash": "^4.14.84",
     "@types/moment-timezone": "^0.5.1",
-    "ionic": "3.19.0",
+    "ionic": "3.19.1",
     "typescript": "2.6.1"
   },
   "cordova": {
