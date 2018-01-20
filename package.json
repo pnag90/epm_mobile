@@ -51,7 +51,6 @@
     "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-console": "^1.1.0",
     "cordova-plugin-device": "^1.1.7",
-    "cordova-plugin-ionic-webview": "^1.1.16",
     "cordova-plugin-local-notification": "git+https://github.com/katzer/cordova-plugin-local-notifications.git",
     "cordova-plugin-network-information": "^1.3.4",
     "cordova-plugin-splashscreen": "^5.0.1",
@@ -91,7 +90,6 @@
       "de.appplant.cordova.plugin.local-notification": {},
       "cordova-plugin-background-mode": {},
       "cordova-sqlite-storage": {},
-      "cordova-plugin-ionic-webview": {},
       "cordova-plugin-camera": {
         "CAMERA_USAGE_DESCRIPTION": " ",
         "PHOTOLIBRARY_USAGE_DESCRIPTION": " "
