@@ -71,11 +71,4 @@ Run post_install script
   
   <img src="screenshots/android-tablet.png" alt="android-tablet" width="350"/>
   <img src="screenshots/ios-tablet.png" alt="ios-tablet" width="350"/>    
-
-
-## Contribution
-:)
-
-
-## License
-ionic-mosum is available under the MIT license. See the LICENSE file for more info.  
+  
